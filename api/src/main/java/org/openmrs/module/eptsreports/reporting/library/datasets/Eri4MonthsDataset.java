@@ -59,7 +59,7 @@ public class Eri4MonthsDataset extends BaseDataSet {
                 "all patients",
                 EptsReportUtils.map(
                     eriCohortQueries.getAllPatientsWhoInitiatedArt(),
-                    "cohortStartDate=${endDate-5m+1d}, cohortEndDate=${endDate-4m}, reportingEndDate=${endDate}, location=${location}")),
+                    "cohortStartDate=${endDate-5m+1d},cohortEndDate=${endDate-4m},reportingEndDate=${endDate},location=${location}")),
             reportingPeriodMappings),
         get4MonthsRetentionColumns());
     addRow(
