@@ -106,7 +106,7 @@ public class EriCohortQueries {
         "initiatedART",
         EptsReportUtils.map(
             getAllPatientsWhoInitiatedArt(),
-            "cohortStartDate=${cohortStartDate},cohortEndDate=${cohortEndDate},reportingEndDate=${reportingEndDate},location=${location}"));
+            "cohortStartDate=${cohortStartDate},cohortEndDate=${cohortEndDate},reportingEndDate=${cohortEndDate},location=${location}"));
     cd.addSearch(
         "pregnant",
         EptsReportUtils.map(
@@ -198,7 +198,7 @@ public class EriCohortQueries {
         "initiatedART",
         EptsReportUtils.map(
             getAllPatientsWhoInitiatedArt(),
-            "cohortStartDate=${cohortStartDate},cohortEndDate=${cohortEndDate},reportingEndDate=${reportingEndDate},location=${location}"));
+            "cohortStartDate=${cohortStartDate},cohortEndDate=${cohortEndDate},reportingEndDate=${cohortEndDate},location=${location}"));
     cd.addSearch(
         "adults",
         EptsReportUtils.map(
