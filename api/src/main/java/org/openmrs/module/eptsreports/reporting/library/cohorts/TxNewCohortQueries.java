@@ -111,7 +111,11 @@ public class TxNewCohortQueries {
             hivMetadata.getPtvEtvProgram().getProgramId(),
             hivMetadata.getCriteriaForArtStart().getConceptId(),
             hivMetadata.getBPlusConcept().getConceptId(),
-                hivMetadata.getARVStartDateConcept().getConceptId()));
+            hivMetadata.getARVStartDateConcept().getConceptId(),
+            commonMetadata.getPriorDeliveryDateConcept().getConceptId(),
+            hivMetadata.getYesConcept().getConceptId(),
+            hivMetadata.getBreastfeeding().getConceptId(),
+            hivMetadata.getPatientGaveBirthWorkflowState().getProgramWorkflowStateId()));
     return cd;
   }
 
