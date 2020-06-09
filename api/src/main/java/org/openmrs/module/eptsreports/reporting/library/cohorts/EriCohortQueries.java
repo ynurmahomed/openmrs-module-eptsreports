@@ -105,18 +105,17 @@ public class EriCohortQueries {
     cd.addParameter(new Parameter("cohortEndDate", "End Date", Date.class));
     cd.addParameter(new Parameter("reportingEndDate", "Reporting End Date", Date.class));
     cd.addParameter(new Parameter("location", "Location", Location.class));
-    /*cd.addSearch(
-    "initiatedART",
-    EptsReportUtils.map(
-        getAllPatientsWhoInitiatedArt(),
-        "cohortStartDate=${cohortStartDate},cohortEndDate=${cohortEndDate},reportingEndDate=${reportingEndDate},location=${location}"));*/
+    cd.addSearch(
+        "initiatedART",
+        EptsReportUtils.map(
+            getAllPatientsWhoInitiatedArt(),
+            "cohortStartDate=${cohortStartDate},cohortEndDate=${cohortEndDate},reportingEndDate=${reportingEndDate},location=${location}"));
     cd.addSearch(
         "pregnant",
         EptsReportUtils.map(
             txNewCohortQueries.getPatientsPregnantEnrolledOnART(),
             "startDate=${cohortStartDate},endDate=${cohortEndDate},location=${location}"));
-    // cd.setCompositionString("initiatedART AND pregnant");
-    cd.setCompositionString("pregnant");
+    cd.setCompositionString("initiatedART AND pregnant");
     return cd;
   }
 
