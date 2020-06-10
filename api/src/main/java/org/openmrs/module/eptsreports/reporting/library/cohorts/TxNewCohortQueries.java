@@ -101,7 +101,6 @@ public class TxNewCohortQueries {
     cd.setQuery(
         PregnantQueries.getPregnantWhileOnArt(
             commonMetadata.getPregnantConcept().getConceptId(),
-            hivMetadata.getPregnancyResponseConcept().getConceptId(),
             hivMetadata.getNumberOfWeeksPregnant().getConceptId(),
             hivMetadata.getPregnancyDueDate().getConceptId(),
             hivMetadata.getARVAdultInitialEncounterType().getEncounterTypeId(),
