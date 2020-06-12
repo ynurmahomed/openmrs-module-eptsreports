@@ -407,7 +407,6 @@ public class PregnantQueries {
             + " OR pregnant_table.pregnancy_date IS NULL)"
             + " GROUP BY breastfeeding.patient_id) AS list ";
 
-    System.out.println(query);
     return query;
   }
 }
