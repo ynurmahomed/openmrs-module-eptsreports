@@ -160,28 +160,30 @@ public class CommonQueries {
    * @return String
    */
   public static String getLastCodedObsBeforeDate(
-      Integer encounterTypeId, Integer question, List<Integer> answers) {
+      List<Integer> encounterTypes, Integer question, List<Integer> answers) {
 
     Map<String, String> map = new HashMap<>();
 
-    map.put("encounterTypeId", String.valueOf(encounterTypeId));
+    map.put("encounterTypes", StringUtils.join(encounterTypes, ","));
     map.put("question", String.valueOf(question));
-    map.put("answer", StringUtils.join(answers, ","));
+    map.put("answers", StringUtils.join(answers, ","));
 
     String query =
-        "SELECT p.patient_id FROM patient p INNER JOIN encounter e "
-            + "ON p.patient_id = e.patient_id "
-            + "INNER JOIN obs o "
-            + "ON e.encounter_id = o.encounter_id "
-            + "WHERE e.location_id = :location AND e.encounter_type = ${encounterTypeId} "
-            + "AND o.concept_id = ${question} AND o.value_coded IN (${answers}) "
-            + "AND e.encounter_datetime <= endDate  "
-            + "AND p.voided = 0 AND e.voided = 0 AND o.voided = 0 "
-            + "ORDER BY e.encounter_datetime DESC ";
+        "SELECT patient_id FROM ( "
+            + "  SELECT p.patient_id, max(e.encounter_datetime) datetime "
+            + "  FROM patient p "
+            + "  INNER JOIN encounter e "
+            + "  ON p.patient_id = e.patient_id "
+            + "  INNER JOIN obs o "
+            + "  ON e.encounter_id = o.encounter_id "
+            + "  WHERE e.location_id = :location AND e.encounter_type IN (${encounterTypes}) "
+            + "  AND o.concept_id = ${question} AND o.value_coded IN (${answers}) "
+            + "  AND e.encounter_datetime <= :onOrBefore  "
+            + "  AND p.voided = 0 AND e.voided = 0 AND o.voided = 0 "
+            + "  GROUP BY p.patient_id ) AS last_encounter";
 
     StringSubstitutor sb = new StringSubstitutor(map);
     String replaced = sb.replace(query);
-    System.out.println(query);
 
     return replaced;
   }

@@ -770,58 +770,48 @@ public class EriDSDCohortQueries {
     CohortDefinition rapidFlow = getPatientsWithStartOrContinueOnRapidFlow();
 
     String mappings = "onOrBefore=${endDate},location=${location}";
-    //  cd.addSearch("TxCurr", EptsReportUtils.map(txCurr, mappings));
-    //  cd.addSearch("scheduledN2", EptsReportUtils.map(patientsScheduled, mappings));
+    cd.addSearch("TxCurr", EptsReportUtils.map(txCurr, mappings));
+    cd.addSearch("scheduledN2", EptsReportUtils.map(patientsScheduled, mappings));
 
-    String rapidFlowMappings =
-        "onOrAfter=${startDate},onOrBefore=${endDate},locationList=${location}";
     cd.addSearch("rapidFlow", EptsReportUtils.map(rapidFlow, mappings));
-    /* cd.addSearch(
-        "completed", EptsReportUtils.map(getPatientsWhoCompletedRapidFlow(), mappings));
+    cd.addSearch("completed", EptsReportUtils.map(getPatientsWhoCompletedRapidFlow(), mappings));
 
     cd.addSearch(
         "nonPregnantNonBreastFeedingNonTb",
         EptsReportUtils.map(
             getPregnantAndBreastfeedingAndOnTBTreatment(),
             "endDate=${endDate},location=${location}"));
-    /*cd.setCompositionString(
-        "TxCurr AND (scheduledN2 OR rapidFlow) NOT (completed OR nonPregnantNonBreastFeedingNonTb)");*/
-    cd.setCompositionString("rapidFlow");
+    cd.setCompositionString(
+        "TxCurr AND (scheduledN2 OR rapidFlow) NOT (completed OR nonPregnantNonBreastFeedingNonTb)");
 
     return cd;
   }
 
-  private CohortDefinition getPatientsWhoCompletedRapidFlow() {
-    CodedObsCohortDefinition cd = new CodedObsCohortDefinition();
+  public CohortDefinition getPatientsWhoCompletedRapidFlow() {
+    SqlCohortDefinition cd = new SqlCohortDefinition();
+
     cd.addParameter(new Parameter("onOrBefore", "Before Date", Date.class));
-    cd.addParameter(new Parameter("onOrAfter", "After Date", Date.class));
     cd.addParameter(new Parameter("location", "Location", Location.class));
-    CommonQueries.getLastCodedObsBeforeDate(
-        hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId(),
-        hivMetadata.getRapidFlow().getConceptId(),
-        Arrays.asList(
-            hivMetadata.getStartDrugsConcept().getConceptId(),
-            hivMetadata.getContinueRegimenConcept().getConceptId()));
+    cd.setQuery(
+        CommonQueries.getLastCodedObsBeforeDate(
+            Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
+            hivMetadata.getRapidFlow().getConceptId(),
+            Arrays.asList(hivMetadata.getCompletedConcept().getConceptId())));
     return cd;
   }
 
-  private CohortDefinition getPatientsWithStartOrContinueOnRapidFlow() {
-    CodedObsCohortDefinition cd = new CodedObsCohortDefinition();
+  public CohortDefinition getPatientsWithStartOrContinueOnRapidFlow() {
+    SqlCohortDefinition cd = new SqlCohortDefinition();
 
     cd.addParameter(new Parameter("onOrBefore", "Before Date", Date.class));
     cd.addParameter(new Parameter("location", "Location", Location.class));
-    CommonQueries.getLastCodedObsBeforeDate(
-        hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId(),
-        hivMetadata.getRapidFlow().getConceptId(),
-        Arrays.asList(
-            hivMetadata.getStartDrugsConcept().getConceptId(),
-            hivMetadata.getContinueRegimenConcept().getConceptId()));
-    /* cd.addEncounterType(hivMetadata.getAdultoSeguimentoEncounterType());
-    cd.setTimeModifier(BaseObsCohortDefinition.TimeModifier.LAST);
-    cd.setQuestion(hivMetadata.getRapidFlow());
-    cd.setOperator(SetComparator.IN);
-    cd.addValue(hivMetadata.getStartDrugsConcept());
-    cd.addValue(hivMetadata.getContinueRegimenConcept());*/
+    cd.setQuery(
+        CommonQueries.getLastCodedObsBeforeDate(
+            Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
+            hivMetadata.getRapidFlow().getConceptId(),
+            Arrays.asList(
+                hivMetadata.getStartDrugsConcept().getConceptId(),
+                hivMetadata.getContinueRegimenConcept().getConceptId())));
     return cd;
   }
 
