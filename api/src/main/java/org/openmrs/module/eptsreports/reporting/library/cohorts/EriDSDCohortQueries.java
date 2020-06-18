@@ -14,6 +14,7 @@ import org.openmrs.module.eptsreports.metadata.HivMetadata;
 import org.openmrs.module.eptsreports.reporting.calculation.dsd.NextAndPrevDatesCalculation;
 import org.openmrs.module.eptsreports.reporting.calculation.dsd.OnArtForAtleastXmonthsCalculation;
 import org.openmrs.module.eptsreports.reporting.cohort.definition.CalculationCohortDefinition;
+import org.openmrs.module.eptsreports.reporting.library.queries.CommonQueries;
 import org.openmrs.module.eptsreports.reporting.library.queries.DsdQueries;
 import org.openmrs.module.eptsreports.reporting.utils.EptsReportUtils;
 import org.openmrs.module.reporting.cohort.definition.BaseObsCohortDefinition;
@@ -769,22 +770,23 @@ public class EriDSDCohortQueries {
     CohortDefinition rapidFlow = getPatientsWithStartOrContinueOnRapidFlow();
 
     String mappings = "onOrBefore=${endDate},location=${location}";
-    cd.addSearch("TxCurr", EptsReportUtils.map(txCurr, mappings));
-    cd.addSearch("scheduledN2", EptsReportUtils.map(patientsScheduled, mappings));
+    //  cd.addSearch("TxCurr", EptsReportUtils.map(txCurr, mappings));
+    //  cd.addSearch("scheduledN2", EptsReportUtils.map(patientsScheduled, mappings));
 
     String rapidFlowMappings =
         "onOrAfter=${startDate},onOrBefore=${endDate},locationList=${location}";
-    cd.addSearch("rapidFlow", EptsReportUtils.map(rapidFlow, rapidFlowMappings));
-    cd.addSearch(
-        "completed", EptsReportUtils.map(getPatientsWhoCompletedRapidFlow(), rapidFlowMappings));
+    cd.addSearch("rapidFlow", EptsReportUtils.map(rapidFlow, mappings));
+    /* cd.addSearch(
+        "completed", EptsReportUtils.map(getPatientsWhoCompletedRapidFlow(), mappings));
 
     cd.addSearch(
         "nonPregnantNonBreastFeedingNonTb",
         EptsReportUtils.map(
             getPregnantAndBreastfeedingAndOnTBTreatment(),
             "endDate=${endDate},location=${location}"));
-    cd.setCompositionString(
-        "TxCurr AND (scheduledN2 OR rapidFlow) NOT (completed OR nonPregnantNonBreastFeedingNonTb)");
+    /*cd.setCompositionString(
+        "TxCurr AND (scheduledN2 OR rapidFlow) NOT (completed OR nonPregnantNonBreastFeedingNonTb)");*/
+    cd.setCompositionString("rapidFlow");
 
     return cd;
   }
@@ -793,26 +795,33 @@ public class EriDSDCohortQueries {
     CodedObsCohortDefinition cd = new CodedObsCohortDefinition();
     cd.addParameter(new Parameter("onOrBefore", "Before Date", Date.class));
     cd.addParameter(new Parameter("onOrAfter", "After Date", Date.class));
-    cd.addParameter(new Parameter("locationList", "Location", Location.class));
-    cd.addEncounterType(hivMetadata.getAdultoSeguimentoEncounterType());
-    cd.setTimeModifier(BaseObsCohortDefinition.TimeModifier.LAST);
-    cd.setQuestion(hivMetadata.getRapidFlow());
-    cd.setOperator(SetComparator.IN);
-    cd.addValue(hivMetadata.getCompletedConcept());
+    cd.addParameter(new Parameter("location", "Location", Location.class));
+    CommonQueries.getLastCodedObsBeforeDate(
+        hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId(),
+        hivMetadata.getRapidFlow().getConceptId(),
+        Arrays.asList(
+            hivMetadata.getStartDrugsConcept().getConceptId(),
+            hivMetadata.getContinueRegimenConcept().getConceptId()));
     return cd;
   }
 
   private CohortDefinition getPatientsWithStartOrContinueOnRapidFlow() {
     CodedObsCohortDefinition cd = new CodedObsCohortDefinition();
+
     cd.addParameter(new Parameter("onOrBefore", "Before Date", Date.class));
-    cd.addParameter(new Parameter("onOrAfter", "After Date", Date.class));
-    cd.addParameter(new Parameter("locationList", "Location", Location.class));
-    cd.addEncounterType(hivMetadata.getAdultoSeguimentoEncounterType());
+    cd.addParameter(new Parameter("location", "Location", Location.class));
+    CommonQueries.getLastCodedObsBeforeDate(
+        hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId(),
+        hivMetadata.getRapidFlow().getConceptId(),
+        Arrays.asList(
+            hivMetadata.getStartDrugsConcept().getConceptId(),
+            hivMetadata.getContinueRegimenConcept().getConceptId()));
+    /* cd.addEncounterType(hivMetadata.getAdultoSeguimentoEncounterType());
     cd.setTimeModifier(BaseObsCohortDefinition.TimeModifier.LAST);
     cd.setQuestion(hivMetadata.getRapidFlow());
     cd.setOperator(SetComparator.IN);
     cd.addValue(hivMetadata.getStartDrugsConcept());
-    cd.addValue(hivMetadata.getContinueRegimenConcept());
+    cd.addValue(hivMetadata.getContinueRegimenConcept());*/
     return cd;
   }
 
