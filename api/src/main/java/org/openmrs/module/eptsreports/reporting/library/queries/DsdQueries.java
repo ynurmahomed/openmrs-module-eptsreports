@@ -121,33 +121,42 @@ public class DsdQueries {
       int adultSeguimentoEncounterTypeId,
       int pediatriaSeguimentoEncounterTypeId,
       int labEncounterTypeId,
+      int fsrEncounterType,
       int masterCardEncounterTypeId,
       int hivViralLoadConceptId,
       int hivViralLoadQualitativeConceptId) {
     String query =
         "SELECT vl_final.patient_id FROM ( "
             + "SELECT vl.patient_id, MAX(vl.latest_date) date FROM ( "
-            + "SELECT p.patient_id, MAX(e.encounter_datetime) latest_date FROM patient p "
-            + "INNER JOIN encounter e ON p.patient_id=e.patient_id "
-            + "INNER JOIN obs o ON p.patient_id=o.person_id "
-            + "WHERE e.encounter_type IN (%d,%d,%d ) AND  o.concept_id IN (%d,%d ) AND "
-            + "e.encounter_datetime BETWEEN date_add(date_add(:endDate, interval -12 MONTH), interval 1 day) AND :endDate "
-            + "AND e.location_id=:location AND p.voided=0 AND e.voided=0 AND o.voided=0 GROUP BY p.patient_id "
-            + "UNION "
-            + "SELECT p.patient_id, MAX(o.obs_datetime) latest_date  FROM patient p "
-            + "INNER JOIN encounter e ON p.patient_id=e.patient_id "
-            + "INNER JOIN obs o ON p.patient_id=o.person_id "
-            + "WHERE e.encounter_type=%d "
-            + "AND  o.concept_id=%d "
-            + " AND "
-            + "o.obs_datetime BETWEEN date_add(date_add(:endDate, interval -12 MONTH), interval 1 day) AND :endDate "
-            + "AND e.location_id=:location AND p.voided=0 AND e.voided=0 AND o.voided=0 GROUP BY p.patient_id)vl GROUP BY vl.patient_id) vl_final ";
+            + "		SELECT p.patient_id, MAX(e.encounter_datetime) latest_date "
+            + "		FROM patient p "
+            + "			INNER JOIN encounter e ON p.patient_id=e.patient_id "
+            + "			INNER JOIN obs o ON e.encounter_id=o.encounter_id "
+            + "		WHERE e.encounter_type IN (%d,%d,%d, %d ) AND  o.concept_id IN (%d,%d ) "
+            + "		AND e.encounter_datetime "
+            + "					BETWEEN date_add(date_add(:endDate, interval -12 MONTH), interval 1 day) AND :endDate "
+            + "			AND e.location_id=:location "
+            + "			AND p.voided=0 AND e.voided=0 AND o.voided=0 "
+            + "		GROUP BY p.patient_id "
+            + "		UNION "
+            + "		SELECT p.patient_id, MAX(o.obs_datetime) latest_date  "
+            + "		FROM patient p "
+            + "			INNER JOIN encounter e ON p.patient_id=e.patient_id "
+            + "			INNER JOIN obs o ON o.encounter_id=o.encounter_id "
+            + "		WHERE e.encounter_type=%d "
+            + "			AND  o.concept_id=%d "
+            + " 		AND  o.obs_datetime "
+            + "					BETWEEN date_add(date_add(:endDate, interval -12 MONTH), interval 1 day) AND :endDate "
+            + "			AND e.location_id=:location AND p.voided=0 AND e.voided=0 AND o.voided=0 "
+            + "		GROUP BY p.patient_id) vl"
+            + "	 GROUP BY vl.patient_id) vl_final ";
 
     return String.format(
         query,
         adultSeguimentoEncounterTypeId,
         pediatriaSeguimentoEncounterTypeId,
         labEncounterTypeId,
+        fsrEncounterType,
         hivViralLoadConceptId,
         hivViralLoadQualitativeConceptId,
         masterCardEncounterTypeId,
@@ -179,7 +188,7 @@ public class DsdQueries {
     String query =
         "SELECT p.patient_id FROM patient p "
             + "INNER JOIN encounter e ON p.patient_id=e.patient_id "
-            + "INNER JOIN obs o ON p.patient_id=o.person_id "
+            + "INNER JOIN obs o ON e.encounter_id=o.encounter_id "
             + "WHERE o.concept_id=%d "
             + " AND o.value_numeric < 1000 AND e.location_id=:location AND "
             + "e.encounter_datetime BETWEEN date_add(date_add(:endDate, interval -12 MONTH), interval 1 day) AND :endDate "
@@ -187,7 +196,7 @@ public class DsdQueries {
             + "UNION "
             + "SELECT p.patient_id FROM patient p "
             + "INNER JOIN encounter e ON p.patient_id=e.patient_id "
-            + "INNER JOIN obs o ON p.patient_id=o.person_id "
+            + "INNER JOIN obs o ON e.encounter_id=o.encounter_id "
             + "WHERE o.concept_id=%d "
             + " AND o.value_coded IN (%d,%d,%d,%d,%d,%d  ) AND e.location_id=:location "
             + "AND e.encounter_datetime BETWEEN date_add(date_add(:endDate, interval -12 MONTH), interval 1 day) AND :endDate "
