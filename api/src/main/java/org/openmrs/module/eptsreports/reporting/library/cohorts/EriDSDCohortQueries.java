@@ -347,8 +347,7 @@ public class EriDSDCohortQueries {
     cd.addSearch(
         "activeAndStable",
         EptsReportUtils.map(
-            getD1(),
-            "startDate=${startDate},endDate=${endDate},location=${location}"));
+            getD1(), "startDate=${startDate},endDate=${endDate},location=${location}"));
 
     cd.setCompositionString("activeAndStable AND NOT pregnant AND NOT breastfeeding");
 
@@ -459,8 +458,7 @@ public class EriDSDCohortQueries {
     cd.addSearch(
         "activeAndStablePatients",
         EptsReportUtils.map(
-        		getD1(),
-            "startDate=${startDate},endDate=${endDate},location=${location}"));
+            getD1(), "startDate=${startDate},endDate=${endDate},location=${location}"));
 
     cd.addSearch(
         "breastfeeding",
@@ -704,8 +702,7 @@ public class EriDSDCohortQueries {
     cd.addSearch(
         "eligiblePatientsD1",
         EptsReportUtils.map(
-        		getD1(),
-            "startDate=${startDate},endDate=${endDate},location=${location}"));
+            getD1(), "startDate=${startDate},endDate=${endDate},location=${location}"));
 
     cd.setCompositionString("activeAndStableN1 AND eligiblePatientsD1");
 
@@ -1241,8 +1238,7 @@ public class EriDSDCohortQueries {
     cd.addSearch(
         "eligiblePatientsD1",
         EptsReportUtils.map(
-        		getD1(),
-            "startDate=${startDate},endDate=${endDate},location=${location}"));
+            getD1(), "startDate=${startDate},endDate=${endDate},location=${location}"));
     cd.addSearch(
         "masterCardAndTxCurrPatients",
         EptsReportUtils.map(
