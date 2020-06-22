@@ -523,8 +523,7 @@ public class EriDSDCohortQueries {
         getPatientsScheduled(
             hivMetadata.getReturnVisitDateForArvDrugConcept(),
             Arrays.asList(
-                hivMetadata.getARVPharmaciaEncounterType(),
-                hivMetadata.getMasterCardDrugPickupEncounterType()),
+                hivMetadata.getARVPharmaciaEncounterType()),
             97,
             83);
     CohortDefinition quarterly = getPatientsWithQuarterlyTypeOfDispensation();
@@ -532,7 +531,6 @@ public class EriDSDCohortQueries {
     CohortDefinition completed = getPatientsWithCompletedOnQuarterlyDispensation();
 
     String mappings = "onOrBefore=${endDate},location=${location}";
-
     cd.addSearch("TxCurr", EptsReportUtils.map(txCurr, mappings));
     cd.addSearch("scheduled", EptsReportUtils.map(patientsScheduled, mappings));
     cd.addSearch("quarterly", EptsReportUtils.map(quarterly, mappings));
@@ -1409,7 +1407,7 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("onOrBefore", "Before Date", Date.class));
     cd.addParameter(new Parameter("location", "Location", Location.class));
     cd.setQuery(
-        CommonQueries.getLastCodedObsBeforeDate(
+        CommonQueries.getLastCodedObservationBeforeDate(
             Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
             hivMetadata.getQuarterlyDispensation().getConceptId(),
             Arrays.asList(hivMetadata.getCompletedConcept().getConceptId())));
@@ -1422,7 +1420,7 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("location", "Location", Location.class));
 
     cd.setQuery(
-        CommonQueries.getLastCodedObsBeforeDate(
+        CommonQueries.getLastCodedObservationBeforeDate(
             Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
             hivMetadata.getQuarterlyDispensation().getConceptId(),
             Arrays.asList(
@@ -1436,7 +1434,7 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("onOrBefore", "Before Date", Date.class));
     cd.addParameter(new Parameter("location", "Location", Location.class));
     cd.setQuery(
-        CommonQueries.getLastCodedObsBeforeDate(
+        CommonQueries.getLastCodedObservationBeforeDate(
             Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
             hivMetadata.getTypeOfDispensationConcept().getConceptId(),
             Arrays.asList(hivMetadata.getQuarterlyConcept().getConceptId())));
