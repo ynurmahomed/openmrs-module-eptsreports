@@ -82,9 +82,7 @@ public class EriDSDDataset extends BaseDataSet {
         "DSD D2 Total",
         EptsReportUtils.map(
             eptsGeneralIndicator.getIndicator(
-                "DSD D2 Total",
-                EptsReportUtils.map(
-                    eriDSDCohortQueries.getPatientsWhoAreActiveAndUnstable(), mappings)),
+                "DSD D2 Total", EptsReportUtils.map(eriDSDCohortQueries.getD2(), mappings)),
             mappings),
         "");
     dsd.addColumn(
@@ -110,25 +108,6 @@ public class EriDSDDataset extends BaseDataSet {
                     mappings)),
             mappings),
         getChildrenColumn());
-    dsd.addColumn(
-        "D2BNP",
-        "Breastfeeding (exclude pregnant)",
-        EptsReportUtils.map(
-            eptsGeneralIndicator.getIndicator(
-                "D2BNP",
-                EptsReportUtils.map(
-                    eriDSDCohortQueries.getPatientsWhoAreBreastFeedingAndNotPregnant(), mappings)),
-            mappings),
-        "");
-    dsd.addColumn(
-        "D2PNB",
-        "Pregnant (exclude breastfeeding)",
-        EptsReportUtils.map(
-            eptsGeneralIndicator.getIndicator(
-                "D2PNB",
-                EptsReportUtils.map(eriDSDCohortQueries.getPatientsWhoArePregnant(), mappings)),
-            mappings),
-        "");
 
     dsd.addColumn(
         "DTT",
@@ -219,10 +198,7 @@ public class EriDSDDataset extends BaseDataSet {
         "DSD FR Stable subtotal",
         EptsReportUtils.map(
             eptsGeneralIndicator.getIndicator(
-                "FRSST",
-                EptsReportUtils.map(
-                    eriDSDCohortQueries.getPatientsWhoAreNotPregnantAndNotBreastfeedingFRStable(),
-                    mappings)),
+                "FRSST", EptsReportUtils.map(eriDSDCohortQueries.getN2Stable(), mappings)),
             mappings),
         "");
     dsd.addColumn(
