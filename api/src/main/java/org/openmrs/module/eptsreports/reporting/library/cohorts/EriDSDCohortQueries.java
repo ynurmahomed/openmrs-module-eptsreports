@@ -1403,7 +1403,7 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("onOrBefore", "Before Date", Date.class));
     cd.addParameter(new Parameter("location", "Location", Location.class));
     cd.setQuery(
-        CommonQueries.getLastCodedObservationBeforeDate(
+        GenericCohortQueries.getLastCodedObservationBeforeDate(
             Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
             hivMetadata.getQuarterlyDispensation().getConceptId(),
             Arrays.asList(hivMetadata.getCompletedConcept().getConceptId())));
@@ -1416,7 +1416,7 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("location", "Location", Location.class));
 
     cd.setQuery(
-        CommonQueries.getLastCodedObservationBeforeDate(
+            GenericCohortQueries.getLastCodedObservationBeforeDate(
             Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
             hivMetadata.getQuarterlyDispensation().getConceptId(),
             Arrays.asList(
@@ -1430,7 +1430,7 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("onOrBefore", "Before Date", Date.class));
     cd.addParameter(new Parameter("location", "Location", Location.class));
     cd.setQuery(
-        CommonQueries.getLastCodedObservationBeforeDate(
+            GenericCohortQueries.getLastCodedObservationBeforeDate(
             Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
             hivMetadata.getTypeOfDispensationConcept().getConceptId(),
             Arrays.asList(hivMetadata.getQuarterlyConcept().getConceptId())));
