@@ -220,7 +220,7 @@ public class CommonQueries {
             +"                                  AND e.voided = 0  "
             +"                                  AND o.voided = 0  "
             +"                WHERE  e.patient_id = p.patient_id  "
-            +"                ORDER  BY o.obs_id DESC  "
+            +"                ORDER  BY e.encounter_datetime DESC  "
             +"                LIMIT  1) last_encounter_of_question  "
             +"        FROM   patient p  "
             +"        WHERE  p.voided = 0) base_tbl  "
