@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.calculation.patient.PatientCalculation;
 import org.openmrs.calculation.patient.PatientCalculationContext;
@@ -69,5 +70,11 @@ public class BreastFeedingDateCalculationTest extends BasePatientCalculationTest
   @Before
   public void initialise() throws Exception {
     executeDataSet("pvlsTest.xml");
+  }
+  @Test
+  public void test() {
+	  
+	   CalculationResultMap calculationResultMap  = 
+			   service.evaluate(Arrays.asList(1777001), this.getCalculation());
   }
 }
