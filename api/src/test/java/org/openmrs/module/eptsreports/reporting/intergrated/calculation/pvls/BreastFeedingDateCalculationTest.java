@@ -1,8 +1,12 @@
 package org.openmrs.module.eptsreports.reporting.intergrated.calculation.pvls;
 
+
+import static org.junit.Assert.*;
+
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Collection;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -11,10 +15,11 @@ import org.openmrs.calculation.patient.PatientCalculation;
 import org.openmrs.calculation.patient.PatientCalculationContext;
 import org.openmrs.calculation.result.CalculationResultMap;
 import org.openmrs.calculation.result.SimpleResult;
+import org.openmrs.module.eptsreports.reporting.calculation.BooleanResult;
 import org.openmrs.module.eptsreports.reporting.calculation.pvls.BreastfeedingDateCalculation;
 import org.openmrs.module.eptsreports.reporting.intergrated.calculation.BasePatientCalculationTest;
 
-@Ignore
+
 public class BreastFeedingDateCalculationTest extends BasePatientCalculationTest {
 
   @Override
@@ -69,12 +74,19 @@ public class BreastFeedingDateCalculationTest extends BasePatientCalculationTest
 
   @Before
   public void initialise() throws Exception {
+	executeDataSet("metadata.xml");
     executeDataSet("pvlsTest.xml");
   }
   @Test
-  public void test() {
+  public void shouldGetAtLeastOnePatientInBreastFeedingDate() {
 	  
 	   CalculationResultMap calculationResultMap  = 
-			   service.evaluate(Arrays.asList(1777001), this.getCalculation());
+			   service.evaluate(Arrays.asList(501), this.getCalculation(),getEvaluationContext());
+	   
+	   SimpleResult result = (SimpleResult) calculationResultMap.get(501);
+
+	   
+	   assertNotNull(result);
+	    //assertEquals(Boolean.TRUE, result.getValue());
   }
 }
