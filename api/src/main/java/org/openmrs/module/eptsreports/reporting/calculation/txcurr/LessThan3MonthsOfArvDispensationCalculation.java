@@ -105,7 +105,7 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
           && returnDateForDrugPickup != null
           && filaEncounterDate.equals(fichaEncounterDate)
           && EptsCalculationUtils.daysSince(filaEncounterDate, returnDateForDrugPickup) < 83) {
-
+        found = true;
       }
 
       resultMap.put(pId, new BooleanResult(found, this));
