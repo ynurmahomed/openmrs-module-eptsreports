@@ -327,10 +327,13 @@ public class EptsCommonDimension {
         txCurrCohortQueries.getPatientsWith3to5MonthsOfDispensationQuantity();
     CohortDefinition more6m =
         txCurrCohortQueries.getPatientsWithMoreThan6MonthsOfDispensationQuantity();
-    String mappings = "onOrAfter=${onOrAfter},onOrBefore=${onOrBefore},location=${locationList}";
-    dim.addCohortDefinition("<3m", EptsReportUtils.map(less3m, mappings));
-    dim.addCohortDefinition("3-5m", EptsReportUtils.map(threeTo5m, mappings));
-    dim.addCohortDefinition(">6m", EptsReportUtils.map(more6m, mappings));
+    dim.addCohortDefinition(
+        "<3m", EptsReportUtils.map(less3m, "onOrBefore=${onOrBefore},location=${locationList}"));
+    dim.addCohortDefinition(
+        "3-5m",
+        EptsReportUtils.map(threeTo5m, "onOrBefore=${onOrBefore},location=${locationList}"));
+    dim.addCohortDefinition(
+        ">6m", EptsReportUtils.map(more6m, "onOrBefore=${onOrBefore},location=${locationList}"));
     return dim;
   }
 

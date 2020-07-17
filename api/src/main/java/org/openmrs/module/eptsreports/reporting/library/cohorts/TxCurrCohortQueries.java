@@ -18,8 +18,11 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringSubstitutor;
 import org.openmrs.Location;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.eptsreports.metadata.CommonMetadata;
 import org.openmrs.module.eptsreports.metadata.HivMetadata;
+import org.openmrs.module.eptsreports.reporting.calculation.txcurr.LessThan3MonthsOfArvDispensationCalculation;
+import org.openmrs.module.eptsreports.reporting.cohort.definition.CalculationCohortDefinition;
 import org.openmrs.module.eptsreports.reporting.library.queries.TXCurrQueries;
 import org.openmrs.module.eptsreports.reporting.utils.EptsReportUtils;
 import org.openmrs.module.reporting.cohort.definition.BaseObsCohortDefinition;
@@ -739,7 +742,14 @@ public class TxCurrCohortQueries {
 
   @DocumentedDefinition("<3 month of ARVs Dispensed")
   public CohortDefinition getPatientsWithLessThan3MonthsDispensationQuantity() {
-    return getPatientsWithMonthlyTypeOfDispensation();
+    CalculationCohortDefinition cd =
+        new CalculationCohortDefinition(
+            "<3 months on ART",
+            Context.getRegisteredComponents(LessThan3MonthsOfArvDispensationCalculation.class)
+                .get(0));
+    cd.addParameter(new Parameter("onOrBefore", "On or before Date", Date.class));
+    cd.addParameter(new Parameter("location", "Location", Location.class));
+    return cd;
   }
 
   @DocumentedDefinition("3-5 months of ARVs dispensed")
@@ -770,10 +780,10 @@ public class TxCurrCohortQueries {
     return getPatientsWithNextPickupBetweenDaysAfterLastPharmacyEncounter(null, 83);
   }
 
-  @DocumentedDefinition(
-      "Patients marked as DM on Ficha Clinica Mastercard on last Tipo de Levantamento")
-  public SqlCohortDefinition getPatientsWithMonthlyTypeOfDispensation() {
+  @DocumentedDefinition("For <3 months of ARVs dispense to active patient’s on ART ")
+  public CohortDefinition getPatientsWithLessThan3MonthlyTypeOfDispensation() {
     SqlCohortDefinition cd = new SqlCohortDefinition();
+    cd.setName("For <3 months of ARVs dispense to active patient’s on ART ");
     String sqlQuery =
         "SELECT pp.patient_id "
             + "FROM   ( "
