@@ -22,6 +22,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.eptsreports.metadata.CommonMetadata;
 import org.openmrs.module.eptsreports.metadata.HivMetadata;
 import org.openmrs.module.eptsreports.reporting.calculation.txcurr.LessThan3MonthsOfArvDispensationCalculation;
+import org.openmrs.module.eptsreports.reporting.calculation.txcurr.SixMonthsAndAboveOnArvDispensationCalculation;
 import org.openmrs.module.eptsreports.reporting.calculation.txcurr.ThreeToFiveMonthsOnArtDispensationCalculation;
 import org.openmrs.module.eptsreports.reporting.cohort.definition.CalculationCohortDefinition;
 import org.openmrs.module.eptsreports.reporting.library.queries.TXCurrQueries;
@@ -767,7 +768,14 @@ public class TxCurrCohortQueries {
 
   @DocumentedDefinition("6 or more months of ARV dispensed")
   public CohortDefinition getPatientsWithMoreThan6MonthsOfDispensationQuantity() {
-    return getPatientsWithSemiAnnualTypeOfDispensation();
+    CalculationCohortDefinition cd =
+        new CalculationCohortDefinition(
+            "6 or more months of ARV dispensed",
+            Context.getRegisteredComponents(SixMonthsAndAboveOnArvDispensationCalculation.class)
+                .get(0));
+    cd.addParameter(new Parameter("onOrBefore", "On or before Date", Date.class));
+    cd.addParameter(new Parameter("location", "Location", Location.class));
+    return cd;
   }
 
   @DocumentedDefinition(
