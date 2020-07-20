@@ -1,17 +1,23 @@
 package org.openmrs.module.eptsreports.reporting.calculation.txcurr;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 import org.openmrs.Concept;
+import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
+import org.openmrs.Obs;
 import org.openmrs.api.context.Context;
 import org.openmrs.calculation.patient.PatientCalculationContext;
 import org.openmrs.calculation.result.CalculationResultMap;
 import org.openmrs.module.eptsreports.metadata.HivMetadata;
 import org.openmrs.module.eptsreports.reporting.calculation.AbstractPatientCalculation;
+import org.openmrs.module.eptsreports.reporting.calculation.BooleanResult;
 import org.openmrs.module.eptsreports.reporting.calculation.common.EPTSCalculationService;
+import org.openmrs.module.eptsreports.reporting.utils.EptsCalculationUtils;
+import org.openmrs.module.reporting.common.TimeQualifier;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,7 +41,128 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
 
     Concept returnVisitDateForArvDrugs = hivMetadata.getReturnVisitDateForArvDrugConcept();
     Concept typeOfDispensation = hivMetadata.getTypeOfDispensationConcept();
-    Concept monthly = hivMetadata.getMonthlyConcept();
+    Concept completedConcept = hivMetadata.getCompletedConcept();
+    Concept quaterly = hivMetadata.getQuarterlyDispensation();
+    Concept dispensaSemestra = hivMetadata.getSemiannualDispensation();
+    Concept startDrugs = hivMetadata.getStartDrugs();
+    Concept continueRegimen = hivMetadata.getContinueRegimenConcept();
+
+    CalculationResultMap getLastFila =
+        ePTSCalculationService.getObs(
+            returnVisitDateForArvDrugs,
+            Arrays.asList(fila),
+            cohort,
+            Arrays.asList(location),
+            null,
+            TimeQualifier.LAST,
+            null,
+            onOrBefore,
+            context);
+    CalculationResultMap getLastFicha =
+        ePTSCalculationService.getObs(
+            typeOfDispensation,
+            Arrays.asList(ficha),
+            cohort,
+            Arrays.asList(location),
+            null,
+            TimeQualifier.LAST,
+            null,
+            onOrBefore,
+            context);
+    CalculationResultMap lastDispensaTrimestralMap =
+        ePTSCalculationService.getObs(
+            quaterly,
+            Arrays.asList(ficha),
+            cohort,
+            Arrays.asList(location),
+            null,
+            TimeQualifier.LAST,
+            null,
+            onOrBefore,
+            context);
+    CalculationResultMap lastDispensaSemestraMap =
+        ePTSCalculationService.getObs(
+            dispensaSemestra,
+            Arrays.asList(ficha),
+            cohort,
+            Arrays.asList(location),
+            null,
+            TimeQualifier.LAST,
+            null,
+            onOrBefore,
+            context);
+    CalculationResultMap lastFichaEncounterMap =
+        ePTSCalculationService.getEncounter(
+            Arrays.asList(ficha), TimeQualifier.LAST, cohort, location, onOrBefore, context);
+    for (Integer pId : cohort) {
+      boolean found = false;
+
+      Obs lastFilaObs = EptsCalculationUtils.obsResultForPatient(getLastFila, pId);
+      Obs lastFichaObs = EptsCalculationUtils.obsResultForPatient(getLastFicha, pId);
+      Obs lastDispensaTrimestralObs =
+          EptsCalculationUtils.obsResultForPatient(lastDispensaTrimestralMap, pId);
+      Obs lastSemiQuartelyObs =
+          EptsCalculationUtils.obsResultForPatient(lastDispensaSemestraMap, pId);
+      Encounter lastFichaEncounter =
+          EptsCalculationUtils.resultForPatient(lastFichaEncounterMap, pId);
+
+      Date returnDateForDrugPickup = null;
+      Date filaEncounterDate = null;
+      Date lastFichaEncounterDate = null;
+
+      if (lastFilaObs != null
+          && lastFilaObs.getEncounter() != null
+          && lastFilaObs.getEncounter().getEncounterDatetime() != null
+          && lastFilaObs.getValueDatetime() != null) {
+        returnDateForDrugPickup = lastFilaObs.getValueDatetime();
+        filaEncounterDate = lastFilaObs.getEncounter().getEncounterDatetime();
+      }
+      if (lastFichaEncounter != null && lastFichaEncounter.getEncounterDatetime() != null) {
+        lastFichaEncounterDate = lastFichaEncounter.getEncounterDatetime();
+      }
+      if (filaEncounterDate != null
+          && lastFichaEncounterDate != null
+          && returnDateForDrugPickup != null
+          && filaEncounterDate.after(lastFichaEncounterDate)
+          && EptsCalculationUtils.daysSince(filaEncounterDate, returnDateForDrugPickup) >= 83
+          && EptsCalculationUtils.daysSince(filaEncounterDate, returnDateForDrugPickup) <= 173) {
+        found = true;
+
+      } else if ((filaEncounterDate != null
+              && lastFichaEncounterDate != null
+              && lastFichaEncounterDate.after(filaEncounterDate)
+              && lastFichaObs != null
+              && lastFichaObs.getValueCoded() != null
+              && lastFichaObs.getValueCoded().equals(quaterly))
+          || (lastDispensaTrimestralObs != null
+              && (lastDispensaTrimestralObs.getValueCoded().equals(startDrugs)
+                  || lastDispensaTrimestralObs.getValueCoded().equals(continueRegimen)))) {
+        found = true;
+      } else if (filaEncounterDate != null
+          && lastFichaEncounterDate == null
+          && EptsCalculationUtils.daysSince(filaEncounterDate, returnDateForDrugPickup) >= 83
+          && EptsCalculationUtils.daysSince(filaEncounterDate, returnDateForDrugPickup) <= 173) {
+        found = true;
+      } else if (filaEncounterDate == null
+          && lastFichaEncounterDate != null
+          && lastFichaObs != null
+          && lastFichaObs.getValueCoded().equals(quaterly)) {
+        found = true;
+      } else if (filaEncounterDate != null
+          && returnDateForDrugPickup != null
+          && filaEncounterDate.equals(lastFichaEncounterDate)
+          && EptsCalculationUtils.daysSince(filaEncounterDate, returnDateForDrugPickup) >= 83
+          && EptsCalculationUtils.daysSince(filaEncounterDate, returnDateForDrugPickup) <= 173) {
+        found = true;
+      }
+      // exclude   patients   who   have   the   last   SEMESTRAL   QUARTERLY (concept   id=23730
+      // with value_coded as value_coded=1267)
+      if (lastSemiQuartelyObs != null
+          && lastSemiQuartelyObs.getValueCoded().equals(completedConcept)) {
+        found = false;
+      }
+      resultMap.put(pId, new BooleanResult(found, this));
+    }
     return resultMap;
   }
 }
