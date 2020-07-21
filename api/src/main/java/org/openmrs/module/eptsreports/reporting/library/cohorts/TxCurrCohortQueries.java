@@ -754,28 +754,32 @@ public class TxCurrCohortQueries {
             "<3 months on ART",
             Context.getRegisteredComponents(LessThan3MonthsOfArvDispensationCalculation.class)
                 .get(0));
+    cd1.addParameter(new Parameter("onOrBefore", "On or before Date", Date.class));
+    cd1.addParameter(new Parameter("location", "Location", Location.class));
     CalculationCohortDefinition cd2 =
         new CalculationCohortDefinition(
             "3-5 months of ARVs dispensed",
             Context.getRegisteredComponents(ThreeToFiveMonthsOnArtDispensationCalculation.class)
                 .get(0));
+    cd2.addParameter(new Parameter("onOrBefore", "On or before Date", Date.class));
+    cd2.addParameter(new Parameter("location", "Location", Location.class));
     CalculationCohortDefinition cd3 =
         new CalculationCohortDefinition(
             "6 or more months of ARV dispensed",
             Context.getRegisteredComponents(SixMonthsAndAboveOnArvDispensationCalculation.class)
                 .get(0));
+    cd3.addParameter(new Parameter("onOrBefore", "On or before Date", Date.class));
+    cd3.addParameter(new Parameter("location", "Location", Location.class));
 
-    cd.addSearch(
-        "less3", EptsReportUtils.map(cd1, "onOrBefore=${onOrBefore},location=${location}"));
-    cd.addSearch("3To5", EptsReportUtils.map(cd2, "onOrBefore=${onOrBefore},location=${location}"));
-    cd.addSearch(
-        "6AndMore", EptsReportUtils.map(cd3, "onOrBefore=${onOrBefore},location=${location}"));
+    cd.addSearch("1", EptsReportUtils.map(cd1, "onOrBefore=${onOrBefore},location=${location}"));
+    cd.addSearch("2", EptsReportUtils.map(cd2, "onOrBefore=${onOrBefore},location=${location}"));
+    cd.addSearch("3", EptsReportUtils.map(cd3, "onOrBefore=${onOrBefore},location=${location}"));
     if (range.equals("<3")) {
-      cd.setCompositionString("less3 AND NOT (3To5 OR 6AndMore)");
+      cd.setCompositionString("1 AND NOT (2 OR 3)");
     } else if (range.equals("3-5")) {
-      cd.setCompositionString("3To5 AND NOT (less3 OR 6AndMore)");
+      cd.setCompositionString("2 AND NOT (1 OR 3)");
     } else if (range.equals(">6")) {
-      cd.setCompositionString("6AndMore AND NOT (less3 OR 3To5)");
+      cd.setCompositionString("3 AND NOT (1 OR 2)");
     }
     return cd;
   }
