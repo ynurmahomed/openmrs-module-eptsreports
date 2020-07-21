@@ -94,6 +94,17 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
     CalculationResultMap lastFichaEncounterMap =
         ePTSCalculationService.getEncounter(
             Arrays.asList(ficha), TimeQualifier.LAST, cohort, location, onOrBefore, context);
+    CalculationResultMap quartelyMap =
+        ePTSCalculationService.getObs(
+            quaterly,
+            null,
+            cohort,
+            Arrays.asList(location),
+            null,
+            TimeQualifier.LAST,
+            null,
+            onOrBefore,
+            context);
     for (Integer pId : cohort) {
       boolean found = false;
 
@@ -105,6 +116,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
           EptsCalculationUtils.obsResultForPatient(lastDispensaSemestraMap, pId);
       Encounter lastFichaEncounter =
           EptsCalculationUtils.resultForPatient(lastFichaEncounterMap, pId);
+      Obs lastQuartelyObs = EptsCalculationUtils.obsResultForPatient(quartelyMap, pId);
 
       Date returnDateForDrugPickup = null;
       Date filaEncounterDate = null;
@@ -157,8 +169,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
       }
       // exclude   patients   who   have   the   last   SEMESTRAL   QUARTERLY (concept   id=23730
       // with value_coded as value_coded=1267)
-      if (lastSemiQuartelyObs != null
-          && lastSemiQuartelyObs.getValueCoded().equals(completedConcept)) {
+      if (lastQuartelyObs != null && lastQuartelyObs.getValueCoded().equals(completedConcept)) {
         found = false;
       }
       resultMap.put(pId, new BooleanResult(found, this));
