@@ -742,39 +742,41 @@ public class TxCurrCohortQueries {
     return defintion;
   }
 
-  @DocumentedDefinition("<3 month of ARVs Dispensed")
-  public CohortDefinition getPatientsWithLessThan3MonthsDispensationQuantity() {
-    CalculationCohortDefinition cd =
+  @DocumentedDefinition("<3, 3-5, >6 months of ARVs Dispensed")
+  public CohortDefinition getPatientsWithMonthsRangeOfArvDispensationQuantity(String range) {
+    CompositionCohortDefinition cd = new CompositionCohortDefinition();
+    cd.setName("<3, 3-5, >6 months of ARVs Dispensed");
+    cd.addParameter(new Parameter("onOrBefore", "On or before Date", Date.class));
+    cd.addParameter(new Parameter("location", "Location", Location.class));
+
+    CalculationCohortDefinition cd1 =
         new CalculationCohortDefinition(
             "<3 months on ART",
             Context.getRegisteredComponents(LessThan3MonthsOfArvDispensationCalculation.class)
                 .get(0));
-    cd.addParameter(new Parameter("onOrBefore", "On or before Date", Date.class));
-    cd.addParameter(new Parameter("location", "Location", Location.class));
-    return cd;
-  }
-
-  @DocumentedDefinition("3-5 months of ARVs dispensed")
-  public CohortDefinition getPatientsWith3to5MonthsOfDispensationQuantity() {
-    CalculationCohortDefinition cd =
+    CalculationCohortDefinition cd2 =
         new CalculationCohortDefinition(
             "3-5 months of ARVs dispensed",
             Context.getRegisteredComponents(ThreeToFiveMonthsOnArtDispensationCalculation.class)
                 .get(0));
-    cd.addParameter(new Parameter("onOrBefore", "On or before Date", Date.class));
-    cd.addParameter(new Parameter("location", "Location", Location.class));
-    return cd;
-  }
-
-  @DocumentedDefinition("6 or more months of ARV dispensed")
-  public CohortDefinition getPatientsWithMoreThan6MonthsOfDispensationQuantity() {
-    CalculationCohortDefinition cd =
+    CalculationCohortDefinition cd3 =
         new CalculationCohortDefinition(
             "6 or more months of ARV dispensed",
             Context.getRegisteredComponents(SixMonthsAndAboveOnArvDispensationCalculation.class)
                 .get(0));
-    cd.addParameter(new Parameter("onOrBefore", "On or before Date", Date.class));
-    cd.addParameter(new Parameter("location", "Location", Location.class));
+
+    cd.addSearch(
+        "less3", EptsReportUtils.map(cd1, "onOrBefore=${onOrBefore},location=${location}"));
+    cd.addSearch("3To5", EptsReportUtils.map(cd2, "onOrBefore=${onOrBefore},location=${location}"));
+    cd.addSearch(
+        "6AndMore", EptsReportUtils.map(cd3, "onOrBefore=${onOrBefore},location=${location}"));
+    if (range.equals("<3")) {
+      cd.setCompositionString("less3 AND NOT (3To5 OR 6AndMore)");
+    } else if (range.equals("3-5")) {
+      cd.setCompositionString("3To5 AND NOT (less3 OR 6AndMore)");
+    } else if (range.equals(">6")) {
+      cd.setCompositionString("6AndMore AND NOT (less3 OR 3To5)");
+    }
     return cd;
   }
 

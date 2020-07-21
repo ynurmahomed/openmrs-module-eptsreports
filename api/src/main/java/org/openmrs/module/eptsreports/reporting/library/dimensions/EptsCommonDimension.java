@@ -322,11 +322,11 @@ public class EptsCommonDimension {
     dim.addParameter(new Parameter("onOrBefore", "orOrBefore", Date.class));
     dim.addParameter(new Parameter("locationList", "Location", Location.class));
     CohortDefinition less3m =
-        txCurrCohortQueries.getPatientsWithLessThan3MonthsDispensationQuantity();
+        txCurrCohortQueries.getPatientsWithMonthsRangeOfArvDispensationQuantity("<3");
     CohortDefinition threeTo5m =
-        txCurrCohortQueries.getPatientsWith3to5MonthsOfDispensationQuantity();
+        txCurrCohortQueries.getPatientsWithMonthsRangeOfArvDispensationQuantity("3-5");
     CohortDefinition more6m =
-        txCurrCohortQueries.getPatientsWithMoreThan6MonthsOfDispensationQuantity();
+        txCurrCohortQueries.getPatientsWithMonthsRangeOfArvDispensationQuantity(">6");
     dim.addCohortDefinition(
         "<3m", EptsReportUtils.map(less3m, "onOrBefore=${onOrBefore},location=${locationList}"));
     dim.addCohortDefinition(
