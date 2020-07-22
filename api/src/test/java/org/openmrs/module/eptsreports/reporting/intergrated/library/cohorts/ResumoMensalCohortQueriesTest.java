@@ -129,8 +129,9 @@ public class ResumoMensalCohortQueriesTest extends DefinitionsTest {
   }
 
   @Test
-  public void getPatientsWhoInitiatedTarvAtThisFacilityDuringCurrentMonthB1()
-      throws EvaluationException {
+  public void
+      getPatientsWhoInitiatedTarvAtThisFacilityDuringCurrentMonthB1ShouldReturnPatientsWhoInitiatedTarv()
+          throws EvaluationException {
     CohortDefinition cd =
         resumoMensalCohortQueries.getPatientsWhoInitiatedTarvAtThisFacilityDuringCurrentMonthB1();
 
@@ -146,7 +147,7 @@ public class ResumoMensalCohortQueriesTest extends DefinitionsTest {
   }
 
   @Test
-  public void getSumOfA1AndA2() throws EvaluationException {
+  public void getSumOfA1AndA2ShouldReturnSumOfA1AndA2() throws EvaluationException {
     CohortDefinition cd = resumoMensalCohortQueries.getSumOfA1AndA2();
 
     HashMap<Parameter, Object> parameters = new HashMap<>();
