@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 import org.openmrs.Concept;
+import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
@@ -41,73 +42,101 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
     Concept typeOfDispensation = hivMetadata.getTypeOfDispensationConcept();
     Concept monthly = hivMetadata.getMonthlyConcept();
 
-    CalculationResultMap getLastFila =
-        ePTSCalculationService.getObs(
-            returnVisitDateForArvDrugs,
-            Arrays.asList(fila),
-            cohort,
-            Arrays.asList(location),
-            null,
-            TimeQualifier.LAST,
-            null,
-            onOrBefore,
-            context);
-    CalculationResultMap getLastFicha =
-        ePTSCalculationService.getObs(
-            typeOfDispensation,
-            Arrays.asList(ficha),
-            cohort,
-            Arrays.asList(location),
-            Arrays.asList(monthly),
-            TimeQualifier.LAST,
-            null,
-            onOrBefore,
-            context);
+    CalculationResultMap getFilaEncounterMap =
+        ePTSCalculationService.getEncounter(
+            Arrays.asList(fila), TimeQualifier.LAST, cohort, location, onOrBefore, context);
+    CalculationResultMap getFichaEncounterMap =
+        ePTSCalculationService.getEncounter(
+            Arrays.asList(ficha), TimeQualifier.LAST, cohort, location, onOrBefore, context);
+
     for (Integer pId : cohort) {
       boolean found = false;
 
-      Obs lastFilaObs = EptsCalculationUtils.obsResultForPatient(getLastFila, pId);
-      Obs lastFicha = EptsCalculationUtils.obsResultForPatient(getLastFicha, pId);
-      Date returnDateForDrugPickup = null;
-      Date filaEncounterDate = null;
-      Date fichaEncounterDate = null;
-      if (lastFilaObs != null
-          && lastFilaObs.getEncounter().getEncounterDatetime() != null
-          && lastFilaObs.getValueDatetime() != null) {
-        returnDateForDrugPickup = lastFilaObs.getValueDatetime();
-        filaEncounterDate = lastFilaObs.getEncounter().getEncounterDatetime();
+      Encounter lastFilaEncounter = EptsCalculationUtils.resultForPatient(getFilaEncounterMap, pId);
+      Encounter lastFichaEncounter =
+          EptsCalculationUtils.resultForPatient(getFichaEncounterMap, pId);
+
+      Date lastFilaEncounterDate = null;
+      Date lastFichaEncounterDate = null;
+
+      if (lastFilaEncounter != null && lastFilaEncounter.getEncounterDatetime() != null) {
+        lastFilaEncounterDate = lastFilaEncounter.getEncounterDatetime();
       }
 
-      if (lastFicha != null
-          && lastFicha.getEncounter().getEncounterDatetime() != null
-          && lastFicha.getValueCoded() != null) {
-        fichaEncounterDate = lastFicha.getEncounter().getEncounterDatetime();
-      }
-      if (filaEncounterDate != null
-          && fichaEncounterDate != null
-          && returnDateForDrugPickup != null
-          && filaEncounterDate.after(fichaEncounterDate)
-          && EptsCalculationUtils.daysSince(filaEncounterDate, returnDateForDrugPickup) < 83) {
-        found = true;
-      } else if (filaEncounterDate != null
-          && fichaEncounterDate != null
-          && fichaEncounterDate.after(filaEncounterDate)) {
-        found = true;
-      } else if (filaEncounterDate != null
-          && fichaEncounterDate == null
-          && returnDateForDrugPickup != null
-          && EptsCalculationUtils.daysSince(filaEncounterDate, returnDateForDrugPickup) < 83) {
-        found = true;
-      } else if ((filaEncounterDate == null || returnDateForDrugPickup == null)
-          && fichaEncounterDate != null) {
-        found = true;
-      } else if (filaEncounterDate != null
-          && returnDateForDrugPickup != null
-          && filaEncounterDate.equals(fichaEncounterDate)
-          && EptsCalculationUtils.daysSince(filaEncounterDate, returnDateForDrugPickup) < 83) {
-        found = true;
+      if (lastFichaEncounter != null && lastFichaEncounter.getEncounterDatetime() != null) {
+        lastFichaEncounterDate = lastFichaEncounter.getEncounterDatetime();
       }
 
+      if (lastFilaEncounterDate != null
+          && lastFichaEncounterDate != null
+          && lastFilaEncounterDate.after(lastFichaEncounterDate)) {
+        if (lastFilaEncounter.getAllObs() != null) {
+          for (Obs obs : lastFilaEncounter.getAllObs()) {
+            if (obs.getConcept().equals(returnVisitDateForArvDrugs)
+                && obs.getValueDatetime() != null
+                && EptsCalculationUtils.daysSince(lastFilaEncounterDate, obs.getValueDatetime())
+                    < 83) {
+              found = true;
+              break;
+            }
+          }
+        }
+      } else if (lastFilaEncounterDate != null
+          && lastFichaEncounterDate != null
+          && lastFichaEncounterDate.after(lastFilaEncounterDate)) {
+        if (lastFichaEncounter.getAllObs() != null) {
+          for (Obs obs : lastFichaEncounter.getAllObs()) {
+            if (obs.getConcept().equals(typeOfDispensation)
+                && obs.getValueCoded().equals(monthly)) {
+              found = true;
+              break;
+            }
+          }
+        }
+
+      } else if (lastFilaEncounterDate != null
+          && lastFichaEncounterDate == null
+          && lastFilaEncounter.getAllObs() != null) {
+        for (Obs obs : lastFilaEncounter.getAllObs()) {
+          if (obs.getConcept().equals(returnVisitDateForArvDrugs)
+              && obs.getValueDatetime() != null
+              && EptsCalculationUtils.daysSince(lastFilaEncounterDate, obs.getValueDatetime())
+                  < 83) {
+            found = true;
+            break;
+          }
+        }
+      } else if (lastFilaEncounterDate == null
+          && lastFichaEncounterDate != null
+          && lastFichaEncounter.getAllObs() != null) {
+        for (Obs obs : lastFichaEncounter.getAllObs()) {
+          if (obs.getConcept().equals(typeOfDispensation) && obs.getValueCoded().equals(monthly)) {
+            found = true;
+            break;
+          }
+        }
+      } else if (lastFilaEncounterDate != null
+          && lastFilaEncounterDate.equals(lastFichaEncounterDate)) {
+
+        for (Obs obs : lastFilaEncounter.getAllObs()) {
+          if (obs.getConcept().equals(returnVisitDateForArvDrugs)
+              && obs.getValueDatetime() != null
+              && EptsCalculationUtils.daysSince(lastFilaEncounterDate, obs.getValueDatetime())
+                  < 83) {
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          for (Obs obs : lastFichaEncounter.getAllObs()) {
+            if (obs.getConcept().equals(typeOfDispensation)
+                && obs.getValueCoded().equals(monthly)) {
+              found = true;
+              break;
+            }
+          }
+        }
+      }
       resultMap.put(pId, new BooleanResult(found, this));
     }
     return resultMap;
