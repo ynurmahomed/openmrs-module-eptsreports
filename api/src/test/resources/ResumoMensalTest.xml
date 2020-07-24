@@ -510,4 +510,52 @@
 		 location_id="21" value_datetime="2019-12-16 00:00:00" comments="24 de julho" creator="1"
 		 date_created="2019-12-09 10:00:33" voided="0" uuid="d9dcaadf-3ed1-444e-a8db-61755469e062"/>
 	<!---->
+
+	<!-- testgetNumberOfPatientsTransferredInFromOtherHealthFacilitiesDuringCurrentMonthB2-->
+	<person person_id="12475" gender="M" birthdate="2010-01-01" birthdate_estimated="false" dead="false" creator="1"
+			date_created="2019-12-18 14:45:41" voided="false" uuid="07850bff-9e61-4155-a885-e2c4eaee9fcd"
+			deathdate_estimated="false"/>
+
+	<patient patient_id="12475" creator="1" date_created="2019-12-18 14:45:41" voided="false"/>
+
+	<encounter encounter_id="539804" encounter_type="53" patient_id="12475" location_id="21"
+			   encounter_datetime="2019-12-18 00:00:00" creator="1" date_created="2019-12-18 14:50:26" voided="0"
+			   uuid="e422ecf9-75dd-4367-b21e-54bccabc4763" />
+
+	<obs obs_id="4267228" person_id="12475" concept_id="1369" encounter_id="539804" obs_datetime="2019-11-12 00:00:00"
+		 location_id="21" comments="24 de julho" creator="1"
+		 date_created="2019-12-18 14:50:26" voided="0" uuid="661aa566-62cb-4781-b0e3-33714979a854"/>
+
+	<patient_program patient_program_id="5618" patient_id="12475" program_id="1" date_enrolled="2013-08-01 00:00:00"
+		 creator="1" date_created="2013-09-16 17:53:04" voided="0"
+		 uuid="196f40e0-ccf7-11ea-b3bf-63b9e775cea8" location_id="21"/>
+
+	<patient_state patient_state_id="7574" patient_program_id="5618" state="10" start_date="2013-08-01" creator="1"
+	   date_created="2013-09-16 17:53:04" voided="0"/>
+
+
+	<!-- -->
+
+	<!-- testgetPatientsWithStartDrugs-->
+
+	<person person_id="12580" gender="F" birthdate="1999-01-01" birthdate_estimated="false" dead="false" creator="1"
+			date_created="2019-11-18 14:45:41" voided="false" uuid="4fbbdcb4-ccff-11ea-a5ef-1f8e35415342"
+			deathdate_estimated="false"/>
+
+	<patient patient_id="12580" creator="1" date_created="2019-11-18 14:45:41" voided="false"/>
+
+	<encounter encounter_id="12580" encounter_type="6" patient_id="12580" location_id="21"
+				encounter_datetime="2019-12-18 00:00:00" creator="1" date_created="2019-12-18 14:50:26" voided="0"
+				uuid="fa97e4aa-cd01-11ea-9333-2f3f5eafbe00" />
+	
+	<obs obs_id="12580" person_id="12580" concept_id="6273" encounter_id="12580" obs_datetime="2019-11-12 00:00:00"
+				location_id="21" comments="24 de julho" creator="1"
+				date_created="2019-12-18 14:50:26" voided="0" uuid="02d9b4fa-cd01-11ea-8910-4f5c82d70b6d"/>
+	
+	<obs obs_id="12580" person_id="12580" concept_id="1256" encounter_id="12580" obs_datetime="2019-11-12 00:00:00"
+				location_id="21" comments="24 de julho" creator="1"
+				date_created="2019-12-18 14:50:26" voided="0" uuid="84bba410-cd01-11ea-afd4-23d0b2c84369"/>
+
+	<!-- -->
+
 </dataset>
