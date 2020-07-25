@@ -48,7 +48,7 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
     CalculationResultMap getFichaEncounterMap =
         ePTSCalculationService.getEncounter(
             Arrays.asList(ficha), TimeQualifier.LAST, cohort, location, onOrBefore, context);
-    CalculationResultMap getLastEncounterWithReturnDateForArv =
+    CalculationResultMap getLastEncounterWithReturnDateForArvMap =
         ePTSCalculationService.getObs(
             returnVisitDateForArvDrugs,
             Arrays.asList(fila),
@@ -58,7 +58,7 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
             TimeQualifier.LAST,
             null,
             context);
-    CalculationResultMap getLastEncounterWithDepositionAndMonthlyAsCodedValue =
+    CalculationResultMap getLastEncounterWithDepositionAndMonthlyAsCodedValueMap =
         ePTSCalculationService.getObs(
             typeOfDispensation,
             Arrays.asList(ficha),
@@ -75,61 +75,72 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
       Encounter lastFilaEncounter = EptsCalculationUtils.resultForPatient(getFilaEncounterMap, pId);
       Encounter lastFichaEncounter =
           EptsCalculationUtils.resultForPatient(getFichaEncounterMap, pId);
+
       Obs getObsWithReturnVisitDateFilled =
-          EptsCalculationUtils.obsResultForPatient(getLastEncounterWithReturnDateForArv, pId);
+          EptsCalculationUtils.obsResultForPatient(getLastEncounterWithReturnDateForArvMap, pId);
+
       Obs getObsWithDepositionAndMonthlyAsCodedValue =
           EptsCalculationUtils.obsResultForPatient(
-              getLastEncounterWithDepositionAndMonthlyAsCodedValue, pId);
+              getLastEncounterWithDepositionAndMonthlyAsCodedValueMap, pId);
 
-      Date lastFilaEncounterDate = null;
-      Date lastFichaEncounterDate = null;
-
-      if (lastFilaEncounter != null && lastFilaEncounter.getEncounterDatetime() != null) {
-        lastFilaEncounterDate = lastFilaEncounter.getEncounterDatetime();
-      }
-
-      if (lastFichaEncounter != null && lastFichaEncounter.getEncounterDatetime() != null) {
-        lastFichaEncounterDate = lastFichaEncounter.getEncounterDatetime();
-      }
       // case 1: fila as last encounter and has return visit date for drugs filled
-      if (lastFilaEncounterDate != null
+      // Both 2 encounter are filled with relevant obseravtions
+      // We consider the fila
+      if (lastFilaEncounter != null
+          && lastFichaEncounter != null
+          && lastFilaEncounter.getEncounterDatetime() != null
+          && lastFichaEncounter.getEncounterDatetime() != null
           && getObsWithReturnVisitDateFilled != null
+          && getObsWithDepositionAndMonthlyAsCodedValue != null
           && getObsWithReturnVisitDateFilled.getEncounter() != null
-          && lastFichaEncounterDate != null
-          && getObsWithReturnVisitDateFilled.getEncounter().getEncounterDatetime() != null
+          && getObsWithDepositionAndMonthlyAsCodedValue.getEncounter() != null
+          && lastFichaEncounter.equals(getObsWithDepositionAndMonthlyAsCodedValue.getEncounter())
           && lastFilaEncounter.equals(getObsWithReturnVisitDateFilled.getEncounter())
-          && lastFilaEncounterDate.after(lastFichaEncounterDate)
+          && getObsWithReturnVisitDateFilled.getEncounter().getEncounterDatetime() != null
+          && lastFilaEncounter
+              .getEncounterDatetime()
+              .after(lastFichaEncounter.getEncounterDatetime())
           && EptsCalculationUtils.daysSince(
-                  lastFilaEncounterDate, getObsWithReturnVisitDateFilled.getValueDatetime())
+                  lastFilaEncounter.getEncounterDatetime(),
+                  getObsWithReturnVisitDateFilled.getValueDatetime())
               < 83) {
         found = true;
       }
       // case 2: ficha as the last encounter and has Last TYPE OF DISPENSATION and value coded as
-      // monthly
-      else if (lastFilaEncounterDate != null
-          && lastFichaEncounterDate != null
+      // monthly, make sure the last encounter has required obs collected on them
+      else if (lastFilaEncounter != null
+          && lastFichaEncounter != null
+          && lastFilaEncounter.getEncounterDatetime() != null
+          && lastFichaEncounter.getEncounterDatetime() != null
+          && getObsWithReturnVisitDateFilled != null
           && getObsWithDepositionAndMonthlyAsCodedValue != null
+          && getObsWithReturnVisitDateFilled.getEncounter() != null
           && getObsWithDepositionAndMonthlyAsCodedValue.getEncounter() != null
-          && lastFichaEncounterDate.after(lastFilaEncounterDate)
-          && lastFichaEncounter.equals(getObsWithDepositionAndMonthlyAsCodedValue.getEncounter())) {
+          && lastFichaEncounter.equals(getObsWithDepositionAndMonthlyAsCodedValue.getEncounter())
+          && lastFilaEncounter.equals(getObsWithReturnVisitDateFilled.getEncounter())
+          && getObsWithReturnVisitDateFilled.getEncounter().getEncounterDatetime() != null
+          && lastFichaEncounter
+              .getEncounterDatetime()
+              .after(lastFilaEncounter.getEncounterDatetime())) {
         found = true;
       }
       // case 3: Only fila available and has value datetime collected for the next drug pick up
-      else if (lastFilaEncounterDate != null
-          && lastFichaEncounterDate == null
+
+      else if (lastFilaEncounter != null
+          && lastFilaEncounter.getEncounterDatetime() != null
           && getObsWithReturnVisitDateFilled != null
           && getObsWithReturnVisitDateFilled.getEncounter() != null
           && getObsWithReturnVisitDateFilled.getEncounter().getEncounterDatetime() != null
           && lastFilaEncounter.equals(getObsWithReturnVisitDateFilled.getEncounter())
           && EptsCalculationUtils.daysSince(
-                  lastFilaEncounterDate, getObsWithReturnVisitDateFilled.getValueDatetime())
+                  lastFilaEncounter.getEncounterDatetime(),
+                  getObsWithReturnVisitDateFilled.getValueDatetime())
               < 83) {
         found = true;
       }
       // case 4: if only ficha is available and has Last TYPE OF DISPENSATION and value coded as
       // monthly
-      else if (lastFilaEncounterDate == null
-          && lastFichaEncounterDate != null
+      else if (lastFichaEncounter != null
           && getObsWithDepositionAndMonthlyAsCodedValue != null
           && getObsWithDepositionAndMonthlyAsCodedValue.getEncounter() != null
           && lastFichaEncounter.equals(getObsWithDepositionAndMonthlyAsCodedValue.getEncounter())) {
@@ -139,8 +150,13 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
       // it has the next drug pick up date
       // otherwise we consider ficha if fila is null, but ficha has to contain the required obs to
       // pass
-      else if (lastFilaEncounterDate != null
-          && lastFilaEncounterDate.equals(lastFichaEncounterDate)) {
+      else if (lastFilaEncounter != null
+          && lastFilaEncounter.getEncounterDatetime() != null
+          && lastFichaEncounter != null
+          && lastFichaEncounter.getEncounterDatetime() != null
+          && lastFilaEncounter
+              .getEncounterDatetime()
+              .equals(lastFichaEncounter.getEncounterDatetime())) {
 
         // check the fila if it has the value date time recorded for the next drug pick up
         if (getObsWithReturnVisitDateFilled != null
@@ -148,7 +164,8 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
             && getObsWithReturnVisitDateFilled.getEncounter().getEncounterDatetime() != null
             && lastFilaEncounter.equals(getObsWithReturnVisitDateFilled.getEncounter())
             && EptsCalculationUtils.daysSince(
-                    lastFilaEncounterDate, getObsWithReturnVisitDateFilled.getValueDatetime())
+                    lastFilaEncounter.getEncounterDatetime(),
+                    getObsWithReturnVisitDateFilled.getValueDatetime())
                 < 83) {
           found = true;
         }
