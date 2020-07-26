@@ -777,9 +777,9 @@ public class TxCurrCohortQueries {
     if (range.equals("<3")) {
       cd.setCompositionString("1 AND NOT (2 OR 3)");
     } else if (range.equals("3-5")) {
-      cd.setCompositionString("2 AND NOT (1 OR 3)");
+      cd.setCompositionString("2 AND NOT 3");
     } else if (range.equals(">6")) {
-      cd.setCompositionString("3 AND NOT (1 OR 2)");
+      cd.setCompositionString("3");
     }
     return cd;
   }
