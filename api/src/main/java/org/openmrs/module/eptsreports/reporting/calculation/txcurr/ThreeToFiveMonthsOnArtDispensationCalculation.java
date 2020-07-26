@@ -80,17 +80,6 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
             null,
             onOrBefore,
             context);
-    CalculationResultMap lastDispensaSemestraMap =
-        ePTSCalculationService.getObs(
-            dispensaSemestra,
-            Arrays.asList(ficha),
-            cohort,
-            Arrays.asList(location),
-            null,
-            TimeQualifier.LAST,
-            null,
-            onOrBefore,
-            context);
     CalculationResultMap lastFichaEncounterMap =
         ePTSCalculationService.getEncounter(
             Arrays.asList(ficha), TimeQualifier.LAST, cohort, location, onOrBefore, context);
@@ -125,29 +114,6 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
       Encounter lastFilaEncounter =
           EptsCalculationUtils.resultForPatient(lastFilaEncounterMap, pId);
 
-      Date returnDateForDrugPickup = null;
-      Date filaEncounterDate = null;
-      Date lastFichaEncounterDate = null;
-      Date lastFilaEncounterDate = null;
-
-      if (lastFilaEncounter != null && lastFilaEncounter.getEncounterDatetime() != null) {
-        lastFilaEncounterDate = lastFilaEncounter.getEncounterDatetime();
-      }
-
-      if (lastFichaEncounter != null && lastFichaEncounter.getEncounterDatetime() != null) {
-        lastFichaEncounterDate = lastFichaEncounter.getEncounterDatetime();
-      }
-
-      if (lastFilaObs != null
-          && lastFilaObs.getEncounter() != null
-          && lastFilaObs.getEncounter().getEncounterDatetime() != null
-          && lastFilaObs.getValueDatetime() != null) {
-        returnDateForDrugPickup = lastFilaObs.getValueDatetime();
-        filaEncounterDate = lastFilaObs.getEncounter().getEncounterDatetime();
-      }
-      if (lastFichaEncounter != null && lastFichaEncounter.getEncounterDatetime() != null) {
-        lastFichaEncounterDate = lastFichaEncounter.getEncounterDatetime();
-      }
       // case 1: fila as last encounter and has return visit date for drugs filled
       // this is compared to the date of Encounter Type Id = 6Last TYPE OF DISPENSATION
       // (id=23739)Value.code = QUARTERLY (id=23730)
@@ -250,6 +216,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
           && lastFilaObs.getEncounter() != null
           && lastFilaEncounter.equals(lastFilaObs.getEncounter())
           && lastFilaObs.getEncounter().getEncounterDatetime() != null
+          && lastFichaEncounter == null
           && EptsCalculationUtils.daysSince(
                   lastFilaEncounter.getEncounterDatetime(), lastFilaObs.getValueDatetime())
               >= 83
@@ -262,6 +229,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
       // QUARTERLY (id=23730)
       else if (lastFichaEncounter != null
           && getLastTypeOfDispensationObsWithQuartelyValueCoded != null
+          && lastFilaEncounter == null
           && lastFichaEncounter.equals(
               getLastTypeOfDispensationObsWithQuartelyValueCoded.getEncounter())) {
         found = true;
@@ -271,6 +239,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
       // Value.coded= (CONTINUE REGIMEN id=1257)
       else if (lastFichaEncounter != null
           && getLastQuartelyDispensationObsWithStartOrContinueRegimenObs != null
+          && lastFilaEncounter == null
           && lastFichaEncounter.equals(
               getLastQuartelyDispensationObsWithStartOrContinueRegimenObs.getEncounter())) {
         found = true;
