@@ -1,5 +1,7 @@
 package org.openmrs.module.eptsreports.reporting.calculation.txcurr;
 
+import static org.openmrs.module.eptsreports.reporting.utils.EptsReportUtils.checkIfFilaOrFichaExists;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -129,6 +131,8 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
       else if (lastFilaEncounter != null
           && lastFilaEncounter.getEncounterDatetime() != null
           && getObsWithReturnVisitDateFilled != null
+          && !(checkIfFilaOrFichaExists(
+              lastFichaEncounter, getObsWithDepositionAndMonthlyAsCodedValue))
           && getObsWithReturnVisitDateFilled.getEncounter() != null
           && getObsWithReturnVisitDateFilled.getEncounter().getEncounterDatetime() != null
           && lastFilaEncounter.equals(getObsWithReturnVisitDateFilled.getEncounter())
@@ -142,6 +146,7 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
       // monthly
       else if (lastFichaEncounter != null
           && getObsWithDepositionAndMonthlyAsCodedValue != null
+          && !(checkIfFilaOrFichaExists(lastFilaEncounter, getObsWithReturnVisitDateFilled))
           && getObsWithDepositionAndMonthlyAsCodedValue.getEncounter() != null
           && lastFichaEncounter.equals(getObsWithDepositionAndMonthlyAsCodedValue.getEncounter())) {
         found = true;

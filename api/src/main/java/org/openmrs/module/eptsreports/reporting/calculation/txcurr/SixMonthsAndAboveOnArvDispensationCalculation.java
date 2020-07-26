@@ -1,5 +1,7 @@
 package org.openmrs.module.eptsreports.reporting.calculation.txcurr;
 
+import static org.openmrs.module.eptsreports.reporting.utils.EptsReportUtils.checkIfFilaOrFichaExists;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -182,12 +184,26 @@ public class SixMonthsAndAboveOnArvDispensationCalculation extends AbstractPatie
         found = true;
 
       }
-      // case 5 if there are multiple fila filled for the same date, pick the latest that has
+      // case 5a if there are multiple fila filled for the same date, pick the latest that has
       // information filled
       else if (lastFilaEncounter != null
           && lastFilaWithReturnForDrugsObs != null
           && lastFilaEncounter.equals(lastFilaWithReturnForDrugsObs.getEncounter())
-          && lastFichaEncounter == null
+          && !(checkIfFilaOrFichaExists(lastFichaEncounter, lastFichaObsWithSemestarlValueCoded))
+          && EptsCalculationUtils.daysSince(
+                  lastFilaEncounter.getEncounterDatetime(),
+                  lastFilaWithReturnForDrugsObs.getValueDatetime())
+              > 173) {
+
+        found = true;
+      }
+      // case 5b if there are multiple fila filled for the same date, pick the latest that has
+      // information filled
+      else if (lastFilaEncounter != null
+          && lastFilaWithReturnForDrugsObs != null
+          && lastFilaEncounter.equals(lastFilaWithReturnForDrugsObs.getEncounter())
+          && !(checkIfFilaOrFichaExists(
+              lastFichaEncounter, lastDispensaSemestraWithStartOrContinueDrugsObs))
           && EptsCalculationUtils.daysSince(
                   lastFilaEncounter.getEncounterDatetime(),
                   lastFilaWithReturnForDrugsObs.getValueDatetime())
@@ -199,12 +215,13 @@ public class SixMonthsAndAboveOnArvDispensationCalculation extends AbstractPatie
       else if (lastFichaEncounter != null
           && lastFichaObsWithSemestarlValueCoded != null
           && lastFichaEncounter.equals(lastFichaObsWithSemestarlValueCoded.getEncounter())
-          && lastFilaEncounter == null) {
+          && !(checkIfFilaOrFichaExists(lastFilaEncounter, lastFilaWithReturnForDrugsObs))) {
         found = true;
       }
       // case 7 if ficha filled is after fila filled with start and continue regimen concept id
       else if (lastFichaEncounter != null
           && lastDispensaSemestraWithStartOrContinueDrugsObs != null
+          && !(checkIfFilaOrFichaExists(lastFilaEncounter, lastFilaWithReturnForDrugsObs))
           && lastFichaEncounter.equals(
               lastDispensaSemestraWithStartOrContinueDrugsObs.getEncounter())
           && lastFilaEncounter == null) {

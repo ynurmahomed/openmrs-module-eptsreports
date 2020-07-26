@@ -24,7 +24,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Properties;
 import org.apache.commons.lang.StringUtils;
+import org.openmrs.Encounter;
 import org.openmrs.GlobalProperty;
+import org.openmrs.Obs;
 import org.openmrs.Program;
 import org.openmrs.ProgramWorkflowState;
 import org.openmrs.api.context.Context;
@@ -170,5 +172,13 @@ public class EptsReportUtils {
     Format formatter = new SimpleDateFormat("dd-MM-yyyy");
 
     return formatter.format(date);
+  }
+
+  public static boolean checkIfFilaOrFichaExists(Encounter encounter, Obs obs) {
+    boolean flag = false;
+    if (encounter != null && obs != null && encounter.equals(obs.getEncounter())) {
+      flag = true;
+    }
+    return flag;
   }
 }
