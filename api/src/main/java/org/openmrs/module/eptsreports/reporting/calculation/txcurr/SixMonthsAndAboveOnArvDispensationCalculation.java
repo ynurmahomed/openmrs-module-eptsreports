@@ -187,23 +187,27 @@ public class SixMonthsAndAboveOnArvDispensationCalculation extends AbstractPatie
       else if (lastFilaEncounter != null
           && lastFilaWithReturnForDrugsObs != null
           && lastFilaEncounter.equals(lastFilaWithReturnForDrugsObs.getEncounter())
+          && lastFichaEncounter == null
           && EptsCalculationUtils.daysSince(
                   lastFilaEncounter.getEncounterDatetime(),
                   lastFilaWithReturnForDrugsObs.getValueDatetime())
               > 173) {
+
         found = true;
       }
       // case 6 if ficha filled is after fila filled with semestral concept id
       else if (lastFichaEncounter != null
           && lastFichaObsWithSemestarlValueCoded != null
-          && lastFichaEncounter.equals(lastFichaObsWithSemestarlValueCoded.getEncounter())) {
+          && lastFichaEncounter.equals(lastFichaObsWithSemestarlValueCoded.getEncounter())
+          && lastFilaEncounter == null) {
         found = true;
       }
       // case 7 if ficha filled is after fila filled with start and continue regimen concept id
       else if (lastFichaEncounter != null
           && lastDispensaSemestraWithStartOrContinueDrugsObs != null
           && lastFichaEncounter.equals(
-              lastDispensaSemestraWithStartOrContinueDrugsObs.getEncounter())) {
+              lastDispensaSemestraWithStartOrContinueDrugsObs.getEncounter())
+          && lastFilaEncounter == null) {
         found = true;
       }
       // case 8 if there is a fila filled with ficha filled with semestral concept filled on the
