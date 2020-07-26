@@ -216,7 +216,6 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
           && lastFilaObs.getEncounter() != null
           && lastFilaEncounter.equals(lastFilaObs.getEncounter())
           && lastFilaObs.getEncounter().getEncounterDatetime() != null
-          && lastFichaEncounter == null
           && EptsCalculationUtils.daysSince(
                   lastFilaEncounter.getEncounterDatetime(), lastFilaObs.getValueDatetime())
               >= 83
@@ -229,7 +228,6 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
       // QUARTERLY (id=23730)
       else if (lastFichaEncounter != null
           && getLastTypeOfDispensationObsWithQuartelyValueCoded != null
-          && lastFilaEncounter == null
           && lastFichaEncounter.equals(
               getLastTypeOfDispensationObsWithQuartelyValueCoded.getEncounter())) {
         found = true;
@@ -239,7 +237,6 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
       // Value.coded= (CONTINUE REGIMEN id=1257)
       else if (lastFichaEncounter != null
           && getLastQuartelyDispensationObsWithStartOrContinueRegimenObs != null
-          && lastFilaEncounter == null
           && lastFichaEncounter.equals(
               getLastQuartelyDispensationObsWithStartOrContinueRegimenObs.getEncounter())) {
         found = true;
