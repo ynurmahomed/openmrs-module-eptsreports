@@ -1,6 +1,5 @@
 package org.openmrs.module.eptsreports.reporting.calculation.txcurr;
 
-import static org.openmrs.module.eptsreports.reporting.utils.EptsReportUtils.checkIfFilaOrFichaExists;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -120,7 +119,6 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
           && getObsWithDepositionAndMonthlyAsCodedValue.getEncounter() != null
           && lastFichaEncounter.equals(getObsWithDepositionAndMonthlyAsCodedValue.getEncounter())
           && lastFilaEncounter.equals(getObsWithReturnVisitDateFilled.getEncounter())
-          && getObsWithReturnVisitDateFilled.getEncounter().getEncounterDatetime() != null
           && lastFichaEncounter
               .getEncounterDatetime()
               .after(lastFilaEncounter.getEncounterDatetime())) {
@@ -131,8 +129,7 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
       else if (lastFilaEncounter != null
           && lastFilaEncounter.getEncounterDatetime() != null
           && getObsWithReturnVisitDateFilled != null
-          && !(checkIfFilaOrFichaExists(
-              lastFichaEncounter, getObsWithDepositionAndMonthlyAsCodedValue))
+          && lastFichaEncounter == null
           && getObsWithReturnVisitDateFilled.getEncounter() != null
           && getObsWithReturnVisitDateFilled.getEncounter().getEncounterDatetime() != null
           && lastFilaEncounter.equals(getObsWithReturnVisitDateFilled.getEncounter())
@@ -146,7 +143,7 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
       // monthly
       else if (lastFichaEncounter != null
           && getObsWithDepositionAndMonthlyAsCodedValue != null
-          && !(checkIfFilaOrFichaExists(lastFilaEncounter, getObsWithReturnVisitDateFilled))
+          && lastFilaEncounter == null
           && getObsWithDepositionAndMonthlyAsCodedValue.getEncounter() != null
           && lastFichaEncounter.equals(getObsWithDepositionAndMonthlyAsCodedValue.getEncounter())) {
         found = true;
@@ -168,17 +165,13 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
             && getObsWithReturnVisitDateFilled.getEncounter() != null
             && getObsWithReturnVisitDateFilled.getEncounter().getEncounterDatetime() != null
             && lastFilaEncounter.equals(getObsWithReturnVisitDateFilled.getEncounter())
+            && getObsWithDepositionAndMonthlyAsCodedValue != null
+            && getObsWithDepositionAndMonthlyAsCodedValue.getEncounter() != null
+            && lastFichaEncounter.equals(getObsWithDepositionAndMonthlyAsCodedValue.getEncounter())
             && EptsCalculationUtils.daysSince(
                     lastFilaEncounter.getEncounterDatetime(),
                     getObsWithReturnVisitDateFilled.getValueDatetime())
                 < 83) {
-          found = true;
-        }
-        // check if fila is empty, we check the ficha if there is any obs saved
-        else if (getObsWithDepositionAndMonthlyAsCodedValue != null
-            && getObsWithDepositionAndMonthlyAsCodedValue.getEncounter() != null
-            && lastFichaEncounter.equals(
-                getObsWithDepositionAndMonthlyAsCodedValue.getEncounter())) {
           found = true;
         }
       }
