@@ -87,8 +87,9 @@ public class ResumoMensalCohortQueriesTest extends DefinitionsTest {
   }
 
   @Ignore
-  public void getNumberOfPatientsTransferredInFromOtherHealthFacilitiesDuringCurrentMonthA2ShouldPass()
-      throws EvaluationException {
+  public void
+      getNumberOfPatientsTransferredInFromOtherHealthFacilitiesDuringCurrentMonthA2ShouldPass()
+          throws EvaluationException {
     CohortDefinition cohort =
         resumoMensalCohortQueries
             .getNumberOfPatientsTransferredInFromOtherHealthFacilitiesDuringCurrentMonthA2();
@@ -136,7 +137,8 @@ public class ResumoMensalCohortQueriesTest extends DefinitionsTest {
   }
 
   @Test
-  public void getNumberOfPatientInitiedPreArtDuringCurrentMothA2ShouldPass() throws EvaluationException {
+  public void getNumberOfPatientInitiedPreArtDuringCurrentMothA2ShouldPass()
+      throws EvaluationException {
     CohortDefinition cd =
         resumoMensalCohortQueries.getNumberOfPatientInitiedPreArtDuringCurrentMothA2();
 

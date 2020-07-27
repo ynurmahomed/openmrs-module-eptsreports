@@ -30,7 +30,8 @@ public class TxCurrCohortQueriesTest extends DefinitionsTest {
   }
 
   @Test
-  public void testGetPatientWithSTARTDRUGSObsBeforeOrOnEndDateShouldPass() throws EvaluationException {
+  public void testGetPatientWithSTARTDRUGSObsBeforeOrOnEndDateShouldPass()
+      throws EvaluationException {
 
     CohortDefinition cd = txCurrCohortQueries.getPatientWithSTARTDRUGSObsBeforeOrOnEndDate();
     Map<Parameter, Object> parameters = new HashMap<>();
@@ -44,7 +45,8 @@ public class TxCurrCohortQueriesTest extends DefinitionsTest {
   }
 
   @Test
-  public void testGetPatientEnrolledInArtProgramByEndReportingPeriodShouldPass() throws EvaluationException {
+  public void testGetPatientEnrolledInArtProgramByEndReportingPeriodShouldPass()
+      throws EvaluationException {
     CohortDefinition cd = txCurrCohortQueries.getPatientEnrolledInArtProgramByEndReportingPeriod();
 
     Map<Parameter, Object> parameters = new HashMap<>();
@@ -92,8 +94,9 @@ public class TxCurrCohortQueriesTest extends DefinitionsTest {
   }
 
   @Test
-  public void testGetPatientsDeadTransferredOutSuspensionsInProgramStateByReportingEndDateShouldPass()
-      throws EvaluationException {
+  public void
+      testGetPatientsDeadTransferredOutSuspensionsInProgramStateByReportingEndDateShouldPass()
+          throws EvaluationException {
     CohortDefinition cd =
         txCurrCohortQueries
             .getPatientsDeadTransferredOutSuspensionsInProgramStateByReportingEndDate();
@@ -110,7 +113,8 @@ public class TxCurrCohortQueriesTest extends DefinitionsTest {
   }
 
   @Test
-  public void testGetDeadPatientsInDemographiscByReportingEndDateShouldPsss() throws EvaluationException {
+  public void testGetDeadPatientsInDemographiscByReportingEndDateShouldPsss()
+      throws EvaluationException {
     CohortDefinition cd = txCurrCohortQueries.getDeadPatientsInDemographiscByReportingEndDate();
 
     Map<Parameter, Object> parameters = new HashMap<>();
