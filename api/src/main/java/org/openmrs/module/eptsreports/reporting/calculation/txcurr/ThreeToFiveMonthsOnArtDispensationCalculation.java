@@ -42,8 +42,8 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
     Concept returnVisitDateForArvDrugs = hivMetadata.getReturnVisitDateForArvDrugConcept();
     Concept typeOfDispensation = hivMetadata.getTypeOfDispensationConcept();
     Concept completedConcept = hivMetadata.getCompletedConcept();
-    Concept quaterlyDispensation = hivMetadata.getQuarterlyDispensation();
-    Concept dispensaSemestra = hivMetadata.getSemiannualDispensation();
+    Concept quaterlyDispensationDt = hivMetadata.getQuarterlyDispensation();
+    Concept quaterlyDispensation = hivMetadata.getQuarterlyConcept();
     Concept startDrugs = hivMetadata.getStartDrugs();
     Concept continueRegimen = hivMetadata.getContinueRegimenConcept();
 
@@ -64,7 +64,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
             Arrays.asList(ficha),
             cohort,
             Arrays.asList(location),
-            Arrays.asList(quaterlyDispensation),
+            Arrays.asList(quaterlyDispensation, quaterlyDispensationDt),
             TimeQualifier.LAST,
             null,
             onOrBefore,
