@@ -1,7 +1,5 @@
 package org.openmrs.module.eptsreports.reporting.calculation.txcurr;
 
-import static org.openmrs.module.eptsreports.reporting.utils.EptsReportUtils.checkIfFilaOrFichaExists;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -216,8 +214,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
           && lastFilaEncounter.getEncounterDatetime() != null
           && lastFilaObs != null
           && lastFilaObs.getEncounter() != null
-          && !(checkIfFilaOrFichaExists(
-              lastFichaEncounter, getLastTypeOfDispensationObsWithQuartelyValueCoded))
+          && lastFichaEncounter == null
           && lastFilaEncounter.equals(lastFilaObs.getEncounter())
           && lastFilaObs.getEncounter().getEncounterDatetime() != null
           && EptsCalculationUtils.daysSince(
@@ -233,8 +230,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
           && lastFilaEncounter.getEncounterDatetime() != null
           && lastFilaObs != null
           && lastFilaObs.getEncounter() != null
-          && !(checkIfFilaOrFichaExists(
-              lastFichaEncounter, getLastQuartelyDispensationObsWithStartOrContinueRegimenObs))
+          && lastFichaEncounter == null
           && lastFilaEncounter.equals(lastFilaObs.getEncounter())
           && lastFilaObs.getEncounter().getEncounterDatetime() != null
           && EptsCalculationUtils.daysSince(
@@ -249,7 +245,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
       // QUARTERLY (id=23730)
       else if (lastFichaEncounter != null
           && getLastTypeOfDispensationObsWithQuartelyValueCoded != null
-          && !(checkIfFilaOrFichaExists(lastFilaEncounter, lastFilaObs))
+          && lastFilaEncounter == null
           && lastFichaEncounter.equals(
               getLastTypeOfDispensationObsWithQuartelyValueCoded.getEncounter())) {
         found = true;
@@ -259,7 +255,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
       // Value.coded= (CONTINUE REGIMEN id=1257)
       else if (lastFichaEncounter != null
           && getLastQuartelyDispensationObsWithStartOrContinueRegimenObs != null
-          && !(checkIfFilaOrFichaExists(lastFilaEncounter, lastFilaObs))
+          && lastFilaEncounter == null
           && lastFichaEncounter.equals(
               getLastQuartelyDispensationObsWithStartOrContinueRegimenObs.getEncounter())) {
         found = true;
