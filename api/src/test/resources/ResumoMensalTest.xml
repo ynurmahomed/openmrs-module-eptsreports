@@ -545,4 +545,20 @@
 		 location_id="21" comments="24 de julho" creator="1"
 		 date_created="2019-12-09 10:00:33" voided="0" uuid="53321af4-d0c0-11ea-9518-0242ac120002"/>
 
+		 <!--testgetNumberOfPatientsTransferredFromAnotherHealthFacilityByEndOfPreviousMonthB12-->
+	<person person_id="" gender="F" birthdate="2000-10-06" birthdate_estimated="false" dead="false" creator="1"
+			date_created="2000-10-06 09:30:10" voided="false" uuid=""
+			deathdate_estimated="false"/>
+
+	<patient patient_id="" creator="1" date_created="2019-02-06 09:56:39" voided="false"/>
+
+	<encounter encounter_id="" encounter_type="" patient_id="" location_id="21"
+			   encounter_datetime="2019-08-09 00:00:00" creator="1" date_created="2019-12-09 10:00:32" voided="0"
+			   uuid="" />
+
+	<obs obs_id="" person_id="" concept_id="" value_coded="" encounter_id="" obs_datetime="2019-12-09 00:00:00"
+		 location_id="21" comments="24 de julho" creator="1"
+		 date_created="2019-12-09 10:00:33" voided="0" uuid=""/>
+		 
+
 </dataset>

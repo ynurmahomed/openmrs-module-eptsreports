@@ -228,8 +228,7 @@ public class ResumoMensalCohortQueriesTest extends DefinitionsTest {
     assertTrue(evaluatedCohort.getMemberIds().contains(1563));
   }
 
- /* @Test
-  @Ignore("")
+  @Test
   public void getPatientsPreTarvScreenedTBShouldReturnPatientsPreTarvTB() throws EvaluationException {
     CohortDefinition cd = resumoMensalCohortQueries.getPatientsWhoInitiatedPreTarvDuringCurrentMonthAndScreenedTB();
 
@@ -240,11 +239,11 @@ public class ResumoMensalCohortQueriesTest extends DefinitionsTest {
 
     EvaluatedCohort evaluatedCohort = evaluateCohortDefinition(cd, parameters);
 
-    assertEquals(3, evaluatedCohort.getMemberIds().size());
-    assertTrue(evaluatedCohort.getMemberIds().contains(1933));
+    assertEquals(, evaluatedCohort.getMemberIds().size());
+    assertTrue(evaluatedCohort.getMemberIds().contains());
   }
 
-  @Test
+  /*@Test
   @Ignore("")
   public void getPatientsPreTarvDuringCurrentMonthAndScreenedTbC1ShouldReturnPatientsPreTarvTbC1() throws EvaluationException {
     CohortDefinition cd = resumoMensalCohortQueries.getPatientsWhoInitiatedPreTarvDuringCurrentMonthAndScreenedTbC1();
