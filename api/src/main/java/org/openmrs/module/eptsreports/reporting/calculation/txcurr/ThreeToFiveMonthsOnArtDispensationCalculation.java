@@ -302,8 +302,8 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
           && lastFilaEncounter.getEncounterDatetime() != null
           && lastFilaObs != null
           && lastFilaObs.getEncounter() != null
-          // && getLastTypeOfDispensationWithoutQuartelyValueCodedObs == null
-          // && getLastQuartelyDispensationWithoutStartOrContinueValueCodedObs == null
+          && getLastTypeOfDispensationWithoutQuartelyValueCodedObs == null
+          && getLastQuartelyDispensationWithoutStartOrContinueValueCodedObs == null
           && lastFilaEncounter.equals(lastFilaObs.getEncounter())
           && lastFilaObs.getEncounter().getEncounterDatetime() != null
           && EptsCalculationUtils.daysSince(
@@ -319,7 +319,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
       // QUARTERLY (id=23720)
       else if (lastFichaEncounter != null
           && getLastTypeOfDispensationObsWithQuartelyValueCoded != null
-          // && lastFilaObs == null
+          && lastFilaObs == null
           && lastFichaEncounter.equals(
               getLastTypeOfDispensationObsWithQuartelyValueCoded.getEncounter())
           && getLastTypeOfDispensationObsWithQuartelyValueCoded
@@ -332,7 +332,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
       // Value.coded= (CONTINUE REGIMEN id=1257)
       else if (lastFichaEncounter != null
           && getLastQuartelyDispensationObsWithStartOrContinueRegimenObs != null
-          // && lastFilaObs == null
+          && lastFilaObs == null
           && lastFichaEncounter.equals(
               getLastQuartelyDispensationObsWithStartOrContinueRegimenObs.getEncounter())
           && (getLastQuartelyDispensationObsWithStartOrContinueRegimenObs
