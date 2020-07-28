@@ -45,34 +45,34 @@ public class EriDSDCohortQueries {
   public CohortDefinition getD1() {
     CompositionCohortDefinition cd = new CompositionCohortDefinition();
     cd.setName(
-            "D1 - Number of active, stable, patients on ART. Combinantion of Criteria 1,2,3,4,5");
+        "D1 - Number of active, stable, patients on ART. Combinantion of Criteria 1,2,3,4,5");
     cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
     cd.addParameter(new Parameter("endDate", "End Date", Date.class));
     cd.addParameter(new Parameter("location", "Location", Location.class));
 
     cd.addSearch(
-            "2",
-            EptsReportUtils.map(
-                    ageCohortQueries.createXtoYAgeCohort("moreThanOrEqual2Years", 2, 200),
-                    "effectiveDate=${endDate}"));
+        "2",
+        EptsReportUtils.map(
+            ageCohortQueries.createXtoYAgeCohort("moreThanOrEqual2Years", 2, 200),
+            "effectiveDate=${endDate}"));
 
     cd.addSearch(
-            "pregnantBreastfeedingTB",
-            EptsReportUtils.map(
-                    getPregnantAndBreastfeedingAndOnTBTreatment(),
-                    "endDate=${endDate},location=${location}"));
+        "pregnantBreastfeedingTB",
+        EptsReportUtils.map(
+            getPregnantAndBreastfeedingAndOnTBTreatment(),
+            "endDate=${endDate},location=${location}"));
 
     cd.addSearch(
-            "sarcomaKarposi",
-            EptsReportUtils.map(
-                    getAllPatientsOnSarcomaKarposi(),
-                    "startDate=${startDate},endDate=${endDate},location=${location}"));
+        "sarcomaKarposi",
+        EptsReportUtils.map(
+            getAllPatientsOnSarcomaKarposi(),
+            "startDate=${startDate},endDate=${endDate},location=${location}"));
 
     cd.addSearch(
-            "7",
-            EptsReportUtils.map(
-                    getPatientsWhoAreStable(),
-                    "startDate=${startDate},endDate=${endDate},location=${location}"));
+        "7",
+        EptsReportUtils.map(
+            getPatientsWhoAreStable(),
+            "startDate=${startDate},endDate=${endDate},location=${location}"));
 
     cd.setCompositionString("(2 AND NOT (pregnantBreastfeedingTB OR sarcomaKarposi) AND 7)");
 
@@ -89,19 +89,19 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("location", "Location", Location.class));
 
     cd.addSearch(
-            "breastfeeding",
-            EptsReportUtils.map(
-                    txNewCohortQueries.getTxNewBreastfeedingComposition(),
-                    "onOrAfter=${endDate-18m},onOrBefore=${endDate},location=${location}"));
+        "breastfeeding",
+        EptsReportUtils.map(
+            txNewCohortQueries.getTxNewBreastfeedingComposition(),
+            "onOrAfter=${endDate-18m},onOrBefore=${endDate},location=${location}"));
     cd.addSearch(
-            "pregnant",
-            EptsReportUtils.map(
-                    txNewCohortQueries.getPatientsPregnantEnrolledOnART(),
-                    "startDate=${endDate-9m},endDate=${endDate},location=${location}"));
+        "pregnant",
+        EptsReportUtils.map(
+            txNewCohortQueries.getPatientsPregnantEnrolledOnART(),
+            "startDate=${endDate-9m},endDate=${endDate},location=${location}"));
     cd.addSearch(
-            "activeAndStable",
-            EptsReportUtils.map(
-                    getD1(), "startDate=${startDate},endDate=${endDate},location=${location}"));
+        "activeAndStable",
+        EptsReportUtils.map(
+            getD1(), "startDate=${startDate},endDate=${endDate},location=${location}"));
 
     cd.setCompositionString("activeAndStable AND NOT pregnant AND NOT breastfeeding");
 
@@ -118,18 +118,18 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("location", "Location", Location.class));
 
     cd.addSearch(
-            "activeAndStablePatients",
-            EptsReportUtils.map(
-                    getD1(), "startDate=${startDate},endDate=${endDate},location=${location}"));
+        "activeAndStablePatients",
+        EptsReportUtils.map(
+            getD1(), "startDate=${startDate},endDate=${endDate},location=${location}"));
 
     cd.addSearch(
-            "pregnantOrBreastfeedingOrTBTreatment",
-            EptsReportUtils.map(
-                    getPregnantAndBreastfeedingAndOnTBTreatment(),
-                    "endDate=${endDate},location=${location}"));
+        "pregnantOrBreastfeedingOrTBTreatment",
+        EptsReportUtils.map(
+            getPregnantAndBreastfeedingAndOnTBTreatment(),
+            "endDate=${endDate},location=${location}"));
 
     cd.setCompositionString(
-            "NOT (activeAndStablePatients OR pregnantOrBreastfeedingOrTBTreatment)");
+        "NOT (activeAndStablePatients OR pregnantOrBreastfeedingOrTBTreatment)");
 
     return cd;
   }
@@ -144,19 +144,19 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("location", "Location", Location.class));
 
     cd.addSearch(
-            "breastfeeding",
-            EptsReportUtils.map(
-                    txNewCohortQueries.getTxNewBreastfeedingComposition(),
-                    "onOrAfter=${endDate-18m},onOrBefore=${endDate},location=${location}"));
+        "breastfeeding",
+        EptsReportUtils.map(
+            txNewCohortQueries.getTxNewBreastfeedingComposition(),
+            "onOrAfter=${endDate-18m},onOrBefore=${endDate},location=${location}"));
     cd.addSearch(
-            "pregnant",
-            EptsReportUtils.map(
-                    txNewCohortQueries.getPatientsPregnantEnrolledOnART(),
-                    "startDate=${endDate-9m},endDate=${endDate},location=${location}"));
+        "pregnant",
+        EptsReportUtils.map(
+            txNewCohortQueries.getPatientsPregnantEnrolledOnART(),
+            "startDate=${endDate-9m},endDate=${endDate},location=${location}"));
     cd.addSearch(
-            "activeAndUnstable",
-            EptsReportUtils.map(
-                    getD2(), "startDate=${startDate},endDate=${endDate},location=${location}"));
+        "activeAndUnstable",
+        EptsReportUtils.map(
+            getD2(), "startDate=${startDate},endDate=${endDate},location=${location}"));
 
     cd.setCompositionString("activeAndUnstable AND NOT pregnant AND NOT breastfeeding");
 
@@ -170,18 +170,18 @@ public class EriDSDCohortQueries {
   public CohortDefinition getN1() {
     CompositionCohortDefinition cd = new CompositionCohortDefinition();
     cd.setName(
-            "N1 - Number of active on ART whose next ART pick-up is schedule for 83-97 days after the date of their last ART drug pick-up (Fluxo Rápido)");
+        "N1 - Number of active on ART whose next ART pick-up is schedule for 83-97 days after the date of their last ART drug pick-up (Fluxo Rápido)");
 
     cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
     cd.addParameter(new Parameter("endDate", "End Date", Date.class));
     cd.addParameter(new Parameter("location", "Location", Location.class));
 
     CohortDefinition patientsScheduled =
-            getPatientsScheduled(
-                    hivMetadata.getReturnVisitDateForArvDrugConcept(),
-                    Arrays.asList(hivMetadata.getARVPharmaciaEncounterType()),
-                    97,
-                    83);
+        getPatientsScheduled(
+            hivMetadata.getReturnVisitDateForArvDrugConcept(),
+            Arrays.asList(hivMetadata.getARVPharmaciaEncounterType()),
+            97,
+            83);
     CohortDefinition quarterly = getPatientsWithQuarterlyTypeOfDispensation();
     CohortDefinition startOrContinue = getPatientsWithStartOrContinueOnQuarterlyDispensation();
     CohortDefinition completed = getPatientsWithCompletedOnQuarterlyDispensation();
@@ -204,18 +204,18 @@ public class EriDSDCohortQueries {
   public CohortDefinition getN2() {
     CompositionCohortDefinition cd = new CompositionCohortDefinition();
     cd.setName(
-            "N2 - Number of active patients on ART whose next clinical consultation is scheduled 175-190 days after the date of the last clinical consultation");
+        "N2 - Number of active patients on ART whose next clinical consultation is scheduled 175-190 days after the date of the last clinical consultation");
 
     cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
     cd.addParameter(new Parameter("endDate", "End Date", Date.class));
     cd.addParameter(new Parameter("location", "Location", Location.class));
 
     CohortDefinition patientsScheduled =
-            getPatientsScheduled175to190days(
-                    Arrays.asList(
-                            hivMetadata.getAdultoSeguimentoEncounterType(),
-                            hivMetadata.getPediatriaSeguimentoEncounterType()),
-                    hivMetadata.getReturnVisitDateConcept());
+        getPatientsScheduled175to190days(
+            Arrays.asList(
+                hivMetadata.getAdultoSeguimentoEncounterType(),
+                hivMetadata.getPediatriaSeguimentoEncounterType()),
+            hivMetadata.getReturnVisitDateConcept());
     CohortDefinition rapidFlow = getPatientsWithStartOrContinueOnRapidFlow();
 
     String mappings = "onOrBefore=${endDate},location=${location}";
@@ -236,7 +236,7 @@ public class EriDSDCohortQueries {
   public CohortDefinition getN3() {
     CompositionCohortDefinition cd = new CompositionCohortDefinition();
     cd.setName(
-            "N3 - Number of active patients on ART that are participating in GAAC at the end of the month prior to month of results submission deadline.");
+        "N3 - Number of active patients on ART that are participating in GAAC at the end of the month prior to month of results submission deadline.");
     cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
     cd.addParameter(new Parameter("endDate", "End Date", Date.class));
     cd.addParameter(new Parameter("location", "Location", Location.class));
@@ -294,7 +294,7 @@ public class EriDSDCohortQueries {
     cd1.addValue(hivMetadata.getStartDrugs());
     cd1.addValue(hivMetadata.getContinueRegimenConcept());
     return new MappedParametersCohortDefinition(
-            cd1, "endDate", "onOrBefore", "location", "locationList");
+        cd1, "endDate", "onOrBefore", "location", "locationList");
   }
 
   /** N8 - Number of active patients on ART who participate in at least one DSD model */
@@ -325,11 +325,11 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("location", "Location", Location.class));
 
     CohortDefinition patientsScheduled =
-            getPatientsScheduled175to190days(
-                    Arrays.asList(hivMetadata.getARVPharmaciaEncounterType()),
-                    hivMetadata.getReturnVisitDateForArvDrugConcept());
+        getPatientsScheduled175to190days(
+            Arrays.asList(hivMetadata.getARVPharmaciaEncounterType()),
+            hivMetadata.getReturnVisitDateForArvDrugConcept());
     CohortDefinition semestralDispensation =
-            getPatientsWithStartOrContinueOnSemestralDispensation();
+        getPatientsWithStartOrContinueOnSemestralDispensation();
     CohortDefinition semestral = getPatientsWithSemestralTypeOfDispensation();
 
     String mappings = "onOrBefore=${endDate},location=${location}";
@@ -357,7 +357,7 @@ public class EriDSDCohortQueries {
     cd.addSearch("pregnant", EptsReportUtils.map(pregnant, pregnantMappings));
 
     String breastfeedingMappings =
-            "onOrAfter=${endDate-18m},onOrBefore=${endDate},location=${location}";
+        "onOrAfter=${endDate-18m},onOrBefore=${endDate},location=${location}";
     cd.addSearch("breastfeeding", EptsReportUtils.map(breastfeeding, breastfeedingMappings));
 
     String tbMappings = "endDate=${endDate},location=${location}";
@@ -377,11 +377,11 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("location", "Location", Location.class));
 
     cd.setQuery(
-            DsdQueries.getPatientsOnSarcomaKarposi(
-                    hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId(),
-                    hivMetadata.getPediatriaSeguimentoEncounterType().getEncounterTypeId(),
-                    hivMetadata.getOtherDiagnosis().getConceptId(),
-                    hivMetadata.getKaposiSarcomaConcept().getConceptId()));
+        DsdQueries.getPatientsOnSarcomaKarposi(
+            hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId(),
+            hivMetadata.getPediatriaSeguimentoEncounterType().getEncounterTypeId(),
+            hivMetadata.getOtherDiagnosis().getConceptId(),
+            hivMetadata.getKaposiSarcomaConcept().getConceptId()));
 
     return cd;
   }
@@ -396,44 +396,44 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("location", "Location", Location.class));
 
     cd.addSearch(
-            "A",
-            EptsReportUtils.map(
-                    getPatientsWhoAreStableA(), "onOrBefore=${endDate},location=${location}"));
+        "A",
+        EptsReportUtils.map(
+            getPatientsWhoAreStableA(), "onOrBefore=${endDate},location=${location}"));
     cd.addSearch(
-            "B",
-            EptsReportUtils.map(
-                    getPatientsWithViralLoadLessThan1000Within12Months(),
-                    "startDate=${startDate},endDate=${endDate},location=${location}"));
+        "B",
+        EptsReportUtils.map(
+            getPatientsWithViralLoadLessThan1000Within12Months(),
+            "startDate=${startDate},endDate=${endDate},location=${location}"));
     cd.addSearch(
-            "C",
-            EptsReportUtils.map(
-                    getCD4CountAndCD4PercentCombined(),
-                    "startDate=${endDate-12m},endDate=${endDate},location=${location}"));
+        "C",
+        EptsReportUtils.map(
+            getCD4CountAndCD4PercentCombined(),
+            "startDate=${endDate-12m},endDate=${endDate},location=${location}"));
     cd.addSearch(
-            "F",
-            EptsReportUtils.map(
-                    genericCohortQueries.hasCodedObs(
-                            hivMetadata.getAdverseReaction(),
-                            BaseObsCohortDefinition.TimeModifier.ANY,
-                            SetComparator.IN,
-                            Arrays.asList(
-                                    hivMetadata.getAdultoSeguimentoEncounterType(),
-                                    hivMetadata.getPediatriaSeguimentoEncounterType()),
-                            Arrays.asList(
-                                    hivMetadata.getPancreatitis(),
-                                    hivMetadata.getLacticAcidosis(),
-                                    hivMetadata.getCytopeniaConcept(),
-                                    hivMetadata.getNephrotoxicityConcept(),
-                                    hivMetadata.getHepatitisConcept(),
-                                    hivMetadata.getStevensJonhsonSyndromeConcept(),
-                                    hivMetadata.getHypersensitivityToAbcOrRailConcept(),
-                                    hivMetadata.getHepaticSteatosisWithHyperlactataemiaConcept())),
-                    "onOrAfter=${endDate-6m},onOrBefore=${endDate},locationList=${location}"));
+        "F",
+        EptsReportUtils.map(
+            genericCohortQueries.hasCodedObs(
+                hivMetadata.getAdverseReaction(),
+                BaseObsCohortDefinition.TimeModifier.ANY,
+                SetComparator.IN,
+                Arrays.asList(
+                    hivMetadata.getAdultoSeguimentoEncounterType(),
+                    hivMetadata.getPediatriaSeguimentoEncounterType()),
+                Arrays.asList(
+                    hivMetadata.getPancreatitis(),
+                    hivMetadata.getLacticAcidosis(),
+                    hivMetadata.getCytopeniaConcept(),
+                    hivMetadata.getNephrotoxicityConcept(),
+                    hivMetadata.getHepatitisConcept(),
+                    hivMetadata.getStevensJonhsonSyndromeConcept(),
+                    hivMetadata.getHypersensitivityToAbcOrRailConcept(),
+                    hivMetadata.getHepaticSteatosisWithHyperlactataemiaConcept())),
+            "onOrAfter=${endDate-6m},onOrBefore=${endDate},locationList=${location}"));
     cd.addSearch(
-            "patientsWithViralLoad",
-            EptsReportUtils.map(
-                    hivCohortQueries.getPatientsViralLoadWithin12Months(),
-                    "startDate=${startDate},endDate=${endDate},location=${location}"));
+        "patientsWithViralLoad",
+        EptsReportUtils.map(
+            hivCohortQueries.getPatientsViralLoadWithin12Months(),
+            "startDate=${startDate},endDate=${endDate},location=${location}"));
     cd.setCompositionString("A AND (B OR (NOT patientsWithViralLoad AND C))  AND NOT F");
 
     return cd;
@@ -445,9 +445,9 @@ public class EriDSDCohortQueries {
    */
   private CohortDefinition getPatientsWhoAreStableA() {
     CalculationCohortDefinition cd =
-            new CalculationCohortDefinition(
-                    "onArtAtleastXmonths",
-                    Context.getRegisteredComponents(OnArtForAtleastXmonthsCalculation.class).get(0));
+        new CalculationCohortDefinition(
+            "onArtAtleastXmonths",
+            Context.getRegisteredComponents(OnArtForAtleastXmonthsCalculation.class).get(0));
     cd.addParameter(new Parameter("onOrBefore", "Before Date", Date.class));
     cd.addParameter(new Parameter("location", "Location", Location.class));
 
@@ -467,15 +467,15 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("location", "Location", Location.class));
 
     cd.addSearch(
-            "CI",
-            EptsReportUtils.map(
-                    getCD4CountAndCD4Percent1(),
-                    "startDate=${endDate-12m},endDate=${endDate},location=${location}"));
+        "CI",
+        EptsReportUtils.map(
+            getCD4CountAndCD4Percent1(),
+            "startDate=${endDate-12m},endDate=${endDate},location=${location}"));
     cd.addSearch(
-            "CII",
-            EptsReportUtils.map(
-                    getCD4CountAndCD4Percent2(),
-                    "startDate=${endDate-12m},endDate=${endDate},location=${location}"));
+        "CII",
+        EptsReportUtils.map(
+            getCD4CountAndCD4Percent2(),
+            "startDate=${endDate-12m},endDate=${endDate},location=${location}"));
 
     cd.setCompositionString("(CI OR CII)");
 
@@ -494,57 +494,57 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("location", "Location", Location.class));
 
     cd.addSearch(
-            "Cd4Abs",
-            EptsReportUtils.map(
-                    genericCohortQueries.hasNumericObs(
-                            hivMetadata.getCD4AbsoluteOBSConcept(),
-                            BaseObsCohortDefinition.TimeModifier.LAST,
-                            RangeComparator.GREATER_THAN,
-                            750.0,
-                            null,
-                            null,
-                            Arrays.asList(
-                                    hivMetadata.getAdultoSeguimentoEncounterType(),
-                                    hivMetadata.getPediatriaSeguimentoEncounterType(),
-                                    hivMetadata.getMisauLaboratorioEncounterType(),
-                                    hivMetadata.getFsrEncounterType())),
-                    "onOrAfter=${endDate-12m},onOrBefore=${endDate},locationList=${location}"));
+        "Cd4Abs",
+        EptsReportUtils.map(
+            genericCohortQueries.hasNumericObs(
+                hivMetadata.getCD4AbsoluteOBSConcept(),
+                BaseObsCohortDefinition.TimeModifier.LAST,
+                RangeComparator.GREATER_THAN,
+                750.0,
+                null,
+                null,
+                Arrays.asList(
+                    hivMetadata.getAdultoSeguimentoEncounterType(),
+                    hivMetadata.getPediatriaSeguimentoEncounterType(),
+                    hivMetadata.getMisauLaboratorioEncounterType(),
+                    hivMetadata.getFsrEncounterType())),
+            "onOrAfter=${endDate-12m},onOrBefore=${endDate},locationList=${location}"));
     cd.addSearch(
-            "Cd4Lab",
-            EptsReportUtils.map(
-                    genericCohortQueries.hasNumericObs(
-                            hivMetadata.getCD4AbsoluteConcept(),
-                            BaseObsCohortDefinition.TimeModifier.LAST,
-                            RangeComparator.GREATER_THAN,
-                            750.0,
-                            null,
-                            null,
-                            Arrays.asList(
-                                    hivMetadata.getAdultoSeguimentoEncounterType(),
-                                    hivMetadata.getPediatriaSeguimentoEncounterType(),
-                                    hivMetadata.getMisauLaboratorioEncounterType(),
-                                    hivMetadata.getFsrEncounterType())),
-                    "onOrAfter=${endDate-12m},onOrBefore=${endDate},locationList=${location}"));
+        "Cd4Lab",
+        EptsReportUtils.map(
+            genericCohortQueries.hasNumericObs(
+                hivMetadata.getCD4AbsoluteConcept(),
+                BaseObsCohortDefinition.TimeModifier.LAST,
+                RangeComparator.GREATER_THAN,
+                750.0,
+                null,
+                null,
+                Arrays.asList(
+                    hivMetadata.getAdultoSeguimentoEncounterType(),
+                    hivMetadata.getPediatriaSeguimentoEncounterType(),
+                    hivMetadata.getMisauLaboratorioEncounterType(),
+                    hivMetadata.getFsrEncounterType())),
+            "onOrAfter=${endDate-12m},onOrBefore=${endDate},locationList=${location}"));
     cd.addSearch(
-            "Cd4Percent",
-            EptsReportUtils.map(
-                    genericCohortQueries.hasNumericObs(
-                            hivMetadata.getCD4PercentConcept(),
-                            BaseObsCohortDefinition.TimeModifier.LAST,
-                            RangeComparator.GREATER_THAN,
-                            15.0,
-                            null,
-                            null,
-                            Arrays.asList(
-                                    hivMetadata.getAdultoSeguimentoEncounterType(),
-                                    hivMetadata.getPediatriaSeguimentoEncounterType(),
-                                    hivMetadata.getMisauLaboratorioEncounterType(),
-                                    hivMetadata.getFsrEncounterType())),
-                    "onOrAfter=${endDate-12m},onOrBefore=${endDate},locationList=${location}"));
+        "Cd4Percent",
+        EptsReportUtils.map(
+            genericCohortQueries.hasNumericObs(
+                hivMetadata.getCD4PercentConcept(),
+                BaseObsCohortDefinition.TimeModifier.LAST,
+                RangeComparator.GREATER_THAN,
+                15.0,
+                null,
+                null,
+                Arrays.asList(
+                    hivMetadata.getAdultoSeguimentoEncounterType(),
+                    hivMetadata.getPediatriaSeguimentoEncounterType(),
+                    hivMetadata.getMisauLaboratorioEncounterType(),
+                    hivMetadata.getFsrEncounterType())),
+            "onOrAfter=${endDate-12m},onOrBefore=${endDate},locationList=${location}"));
     cd.addSearch(
-            "Age",
-            EptsReportUtils.map(
-                    ageCohortQueries.createXtoYAgeCohort("2-4", 2, 4), "effectiveDate=${endDate}"));
+        "Age",
+        EptsReportUtils.map(
+            ageCohortQueries.createXtoYAgeCohort("2-4", 2, 4), "effectiveDate=${endDate}"));
 
     cd.setCompositionString("(Cd4Abs OR Cd4Lab OR Cd4Percent) AND Age");
 
@@ -555,21 +555,21 @@ public class EriDSDCohortQueries {
   private CohortDefinition getCD4CountAndCD4Percent2() {
     CompositionCohortDefinition cd = new CompositionCohortDefinition();
     cd.setName(
-            "5C (ii) One CD4 result > 200 cels/mm3 in last ART year (if patients age >=5 years)");
+        "5C (ii) One CD4 result > 200 cels/mm3 in last ART year (if patients age >=5 years)");
     cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
     cd.addParameter(new Parameter("endDate", "End Date", Date.class));
     cd.addParameter(new Parameter("location", "Location", Location.class));
 
     cd.addSearch(
-            "Age",
-            EptsReportUtils.map(
-                    ageCohortQueries.createXtoYAgeCohort("greaterThan5", 5, 900),
-                    "effectiveDate=${endDate}"));
+        "Age",
+        EptsReportUtils.map(
+            ageCohortQueries.createXtoYAgeCohort("greaterThan5", 5, 900),
+            "effectiveDate=${endDate}"));
 
     cd.addSearch(
-            "CD4CountAndCD4Percent2Part1",
-            EptsReportUtils.map(
-                    getCD4CountAndCD4Percent2Part1(), "endDate=${endDate},location=${location}"));
+        "CD4CountAndCD4Percent2Part1",
+        EptsReportUtils.map(
+            getCD4CountAndCD4Percent2Part1(), "endDate=${endDate},location=${location}"));
 
     cd.setCompositionString("CD4CountAndCD4Percent2Part1 AND Age");
 
@@ -592,77 +592,77 @@ public class EriDSDCohortQueries {
     map.put("5497", hivMetadata.getCD4AbsoluteConcept().getConceptId());
 
     String query =
-            "SELECT  cd4_max.patient_id "
-                    + "FROM "
-                    + "( "
-                    + "    SELECT  most_recent.patient_id, MAX(most_recent.last_date) cd4_max_date "
-                    + "    FROM "
-                    + "    ( "
-                    + "        SELECT p.patient_id, MAX(e.encounter_datetime) last_date "
-                    + "        FROM  patient p "
-                    + "            INNER JOIN encounter e  "
-                    + "                ON e.patient_id=p.patient_id "
-                    + "            INNER JOIN obs o  "
-                    + "                ON o.encounter_id=e.encounter_id "
-                    + "        WHERE  "
-                    + "            e.encounter_type IN (${6},${9},${13},${51})   "
-                    + "            AND  o.concept_id IN (${1695},${5497})   "
-                    + "            AND e.encounter_datetime   "
-                    + "                    BETWEEN date_add(date_add( :endDate, interval -12 MONTH), interval 1 day)  "
-                    + "                        AND  :endDate  "
-                    + "            AND e.location_id=   :location   "
-                    + "            AND o.voided = 0  "
-                    + "            AND e.voided = 0 "
-                    + "            AND p.voided = 0 "
-                    + "        GROUP BY p.patient_id "
-                    + "        UNION "
-                    + "        SELECT p.patient_id, MAX(o.obs_datetime) latest_date    "
-                    + "        FROM patient p   "
-                    + "            INNER JOIN encounter e   "
-                    + "                    ON p.patient_id=e.patient_id   "
-                    + "            INNER JOIN obs o   "
-                    + "                    ON o.encounter_id=e.encounter_id   "
-                    + "        WHERE e.encounter_type=${53}  "
-                    + "            AND o.concept_id = ${1695}   "
-                    + "            AND  o.obs_datetime   "
-                    + "                        BETWEEN date_add(date_add( :endDate, interval -12 MONTH), interval 1 day)  "
-                    + "                            AND  :endDate   "
-                    + "            AND e.location_id=   :location   "
-                    + "            AND p.voided=0   "
-                    + "            AND e.voided=0   "
-                    + "            AND o.voided=0   "
-                    + "        GROUP BY p.patient_id "
-                    + "    )most_recent "
-                    + "    GROUP BY most_recent.patient_id "
-                    + ")cd4_max "
-                    + "    INNER JOIN encounter e  "
-                    + "        ON e.patient_id = cd4_max.patient_id  "
-                    + "    INNER JOIN obs o  "
-                    + "        ON o.encounter_id = e.encounter_id  "
-                    + "WHERE  e.voided=0   "
-                    + "    AND o.voided=0   "
-                    + "    AND "
-                    + "    (  "
-                    + "        (o.concept_id IN (${1695} ,${5497}) AND o.value_numeric > 200)  "
-                    + "          "
-                    + "    )   "
-                    + "    AND e.location_id=  :location   "
-                    + "    AND  "
-                    + "    ( "
-                    + "        (e.encounter_type IN (${6},${9},${13},${51})  "
-                    + "            AND e.encounter_datetime   "
-                    + "                BETWEEN date_add(date_add( :endDate, interval -12 MONTH), interval 1 day) AND  :endDate "
-                    + "            AND e.encounter_datetime = cd4_max.cd4_max_date  "
-                    + "        ) "
-                    + "        OR  "
-                    + "        (e.encounter_type = ${53} "
-                    + "            AND o.obs_datetime     "
-                    + "                BETWEEN date_add(date_add( :endDate, interval -12 MONTH), interval 1 day) AND  :endDate "
-                    + "            AND o.obs_datetime = cd4_max.cd4_max_date  "
-                    + "        ) "
-                    + "    )  "
-                    + " "
-                    + "ORDER BY cd4_max.patient_id";
+        "SELECT  cd4_max.patient_id "
+            + "FROM "
+            + "( "
+            + "    SELECT  most_recent.patient_id, MAX(most_recent.last_date) cd4_max_date "
+            + "    FROM "
+            + "    ( "
+            + "        SELECT p.patient_id, MAX(e.encounter_datetime) last_date "
+            + "        FROM  patient p "
+            + "            INNER JOIN encounter e  "
+            + "                ON e.patient_id=p.patient_id "
+            + "            INNER JOIN obs o  "
+            + "                ON o.encounter_id=e.encounter_id "
+            + "        WHERE  "
+            + "            e.encounter_type IN (${6},${9},${13},${51})   "
+            + "            AND  o.concept_id IN (${1695},${5497})   "
+            + "            AND e.encounter_datetime   "
+            + "                    BETWEEN date_add(date_add( :endDate, interval -12 MONTH), interval 1 day)  "
+            + "                        AND  :endDate  "
+            + "            AND e.location_id=   :location   "
+            + "            AND o.voided = 0  "
+            + "            AND e.voided = 0 "
+            + "            AND p.voided = 0 "
+            + "        GROUP BY p.patient_id "
+            + "        UNION "
+            + "        SELECT p.patient_id, MAX(o.obs_datetime) latest_date    "
+            + "        FROM patient p   "
+            + "            INNER JOIN encounter e   "
+            + "                    ON p.patient_id=e.patient_id   "
+            + "            INNER JOIN obs o   "
+            + "                    ON o.encounter_id=e.encounter_id   "
+            + "        WHERE e.encounter_type=${53}  "
+            + "            AND o.concept_id = ${1695}   "
+            + "            AND  o.obs_datetime   "
+            + "                        BETWEEN date_add(date_add( :endDate, interval -12 MONTH), interval 1 day)  "
+            + "                            AND  :endDate   "
+            + "            AND e.location_id=   :location   "
+            + "            AND p.voided=0   "
+            + "            AND e.voided=0   "
+            + "            AND o.voided=0   "
+            + "        GROUP BY p.patient_id "
+            + "    )most_recent "
+            + "    GROUP BY most_recent.patient_id "
+            + ")cd4_max "
+            + "    INNER JOIN encounter e  "
+            + "        ON e.patient_id = cd4_max.patient_id  "
+            + "    INNER JOIN obs o  "
+            + "        ON o.encounter_id = e.encounter_id  "
+            + "WHERE  e.voided=0   "
+            + "    AND o.voided=0   "
+            + "    AND "
+            + "    (  "
+            + "        (o.concept_id IN (${1695} ,${5497}) AND o.value_numeric > 200)  "
+            + "          "
+            + "    )   "
+            + "    AND e.location_id=  :location   "
+            + "    AND  "
+            + "    ( "
+            + "        (e.encounter_type IN (${6},${9},${13},${51})  "
+            + "            AND e.encounter_datetime   "
+            + "                BETWEEN date_add(date_add( :endDate, interval -12 MONTH), interval 1 day) AND  :endDate "
+            + "            AND e.encounter_datetime = cd4_max.cd4_max_date  "
+            + "        ) "
+            + "        OR  "
+            + "        (e.encounter_type = ${53} "
+            + "            AND o.obs_datetime     "
+            + "                BETWEEN date_add(date_add( :endDate, interval -12 MONTH), interval 1 day) AND  :endDate "
+            + "            AND o.obs_datetime = cd4_max.cd4_max_date  "
+            + "        ) "
+            + "    )  "
+            + " "
+            + "ORDER BY cd4_max.patient_id";
 
     StringSubstitutor sb = new StringSubstitutor(map);
     String replaceQuery = sb.replace(query);
@@ -677,19 +677,19 @@ public class EriDSDCohortQueries {
     SqlCohortDefinition cd = new SqlCohortDefinition();
 
     cd.setName(
-            "Patients with LAST Viral Load Result < 1000 copies/ml in last ART year (only if VL exists)");
+        "Patients with LAST Viral Load Result < 1000 copies/ml in last ART year (only if VL exists)");
     cd.addParameter(new Parameter("startDate", "Start Date", Date.class));
     cd.addParameter(new Parameter("endDate", "End Date", Date.class));
     cd.addParameter(new Parameter("location", "Location", Location.class));
 
     Map<String, Integer> map = new HashMap<>();
     map.put(
-            "adultoSeguimento", hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId());
+        "adultoSeguimento", hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId());
     map.put(
-            "pediatriaSeguimento",
-            hivMetadata.getPediatriaSeguimentoEncounterType().getEncounterTypeId());
+        "pediatriaSeguimento",
+        hivMetadata.getPediatriaSeguimentoEncounterType().getEncounterTypeId());
     map.put(
-            "misauLaboratorio", hivMetadata.getMisauLaboratorioEncounterType().getEncounterTypeId());
+        "misauLaboratorio", hivMetadata.getMisauLaboratorioEncounterType().getEncounterTypeId());
     map.put("fsr", hivMetadata.getFsrEncounterType().getEncounterTypeId());
     map.put("masterCard", hivMetadata.getMasterCardEncounterType().getEncounterTypeId());
     map.put("hivViralLoad", hivMetadata.getHivViralLoadConcept().getConceptId());
@@ -703,71 +703,71 @@ public class EriDSDCohortQueries {
     map.put("lessThan839Copies", hivMetadata.getLessThan839CopiesConcept().getConceptId());
 
     String query =
-            " SELECT vl_max.patient_id "
-                    + "FROM "
-                    + "( "
-                    + "SELECT vl.patient_id, MAX(vl.latest_date) max_date "
-                    + "FROM "
-                    + "(  "
-                    + "        SELECT p.patient_id, MAX(e.encounter_datetime) latest_date  "
-                    + "        FROM patient p  "
-                    + "            INNER JOIN encounter e  "
-                    + "                    ON p.patient_id=e.patient_id  "
-                    + "            INNER JOIN obs o  "
-                    + "                    ON e.encounter_id=o.encounter_id  "
-                    + "        WHERE e.encounter_type IN (${adultoSeguimento},${pediatriaSeguimento},${misauLaboratorio},${fsr} )  "
-                    + "            AND  o.concept_id IN (${hivViralLoad},${hivViralLoadQualitative} )  "
-                    + "            AND e.encounter_datetime  "
-                    + "                        BETWEEN date_add(date_add(:endDate, interval -12 MONTH), interval 1 day) AND :endDate "
-                    + "            AND e.location_id=  :location "
-                    + "            AND p.voided=0  "
-                    + "            AND e.voided=0  "
-                    + "            AND o.voided=0  "
-                    + "        GROUP BY p.patient_id  "
-                    + "        UNION  "
-                    + "        SELECT p.patient_id, MAX(o.obs_datetime) latest_date   "
-                    + "        FROM patient p  "
-                    + "            INNER JOIN encounter e  "
-                    + "                    ON p.patient_id=e.patient_id  "
-                    + "            INNER JOIN obs o  "
-                    + "                    ON o.encounter_id=e.encounter_id  "
-                    + "        WHERE e.encounter_type=${masterCard} "
-                    + "            AND o.concept_id = ${hivViralLoad} "
-                    + "            AND  o.obs_datetime  "
-                    + "                        BETWEEN date_add(date_add(:endDate, interval -12 MONTH), interval 1 day) AND :endDate  "
-                    + "            AND e.location_id=  :location  "
-                    + "            AND p.voided=0  "
-                    + "            AND e.voided=0  "
-                    + "            AND o.voided=0  "
-                    + "        GROUP BY p.patient_id"
-                    + "		) vl "
-                    + " GROUP BY   vl.patient_id "
-                    + ") vl_max"
-                    + "        INNER JOIN encounter e "
-                    + "            ON e.patient_id = vl_max.patient_id "
-                    + "        INNER JOIN obs o "
-                    + "            ON o.encounter_id = e.encounter_id "
-                    + "    WHERE  e.voided=0  "
-                    + "        AND o.voided=0  "
-                    + "        AND( "
-                    + "                (o.concept_id=${hivViralLoad} AND o.value_numeric < 1000) "
-                    + "                OR "
-                    + "                (o.concept_id=${hivViralLoadQualitative} AND o.value_coded IN (${beyondDetectableLimit},${undetectableViralLoad},${lessThan10Copies},${lessThan20Copies},${lessThan40Copies},${lessThan400Copies},${lessThan839Copies})) "
-                    + "            )  "
-                    + "        AND e.location_id= :location "
-                    + "AND (  "
-                    + "                                       (e.encounter_type IN (${adultoSeguimento},${pediatriaSeguimento},${misauLaboratorio},${fsr})   "
-                    + "                                             AND e.encounter_datetime    "
-                    + "                        BETWEEN date_add(date_add(:endDate, interval -12 MONTH), interval 1 day) AND :endDate  "
-                    + "                                           AND e.encounter_datetime = vl_max.max_date )  "
-                    + "                           OR   "
-                    + "                                       (e.encounter_type =${masterCard}  "
-                    + "                                             AND o.obs_datetime      "
-                    + "                        BETWEEN date_add(date_add(:endDate, interval -12 MONTH), interval 1 day) AND :endDate  "
-                    + "                                             AND o.obs_datetime = vl_max.max_date       )  "
-                    + "                                 )  "
-                    + "        "
-                    + "   ORDER BY vl_max.patient_id ";
+        " SELECT vl_max.patient_id "
+            + "FROM "
+            + "( "
+            + "SELECT vl.patient_id, MAX(vl.latest_date) max_date "
+            + "FROM "
+            + "(  "
+            + "        SELECT p.patient_id, MAX(e.encounter_datetime) latest_date  "
+            + "        FROM patient p  "
+            + "            INNER JOIN encounter e  "
+            + "                    ON p.patient_id=e.patient_id  "
+            + "            INNER JOIN obs o  "
+            + "                    ON e.encounter_id=o.encounter_id  "
+            + "        WHERE e.encounter_type IN (${adultoSeguimento},${pediatriaSeguimento},${misauLaboratorio},${fsr} )  "
+            + "            AND  o.concept_id IN (${hivViralLoad},${hivViralLoadQualitative} )  "
+            + "            AND e.encounter_datetime  "
+            + "                        BETWEEN date_add(date_add(:endDate, interval -12 MONTH), interval 1 day) AND :endDate "
+            + "            AND e.location_id=  :location "
+            + "            AND p.voided=0  "
+            + "            AND e.voided=0  "
+            + "            AND o.voided=0  "
+            + "        GROUP BY p.patient_id  "
+            + "        UNION  "
+            + "        SELECT p.patient_id, MAX(o.obs_datetime) latest_date   "
+            + "        FROM patient p  "
+            + "            INNER JOIN encounter e  "
+            + "                    ON p.patient_id=e.patient_id  "
+            + "            INNER JOIN obs o  "
+            + "                    ON o.encounter_id=e.encounter_id  "
+            + "        WHERE e.encounter_type=${masterCard} "
+            + "            AND o.concept_id = ${hivViralLoad} "
+            + "            AND  o.obs_datetime  "
+            + "                        BETWEEN date_add(date_add(:endDate, interval -12 MONTH), interval 1 day) AND :endDate  "
+            + "            AND e.location_id=  :location  "
+            + "            AND p.voided=0  "
+            + "            AND e.voided=0  "
+            + "            AND o.voided=0  "
+            + "        GROUP BY p.patient_id"
+            + "		) vl "
+            + " GROUP BY   vl.patient_id "
+            + ") vl_max"
+            + "        INNER JOIN encounter e "
+            + "            ON e.patient_id = vl_max.patient_id "
+            + "        INNER JOIN obs o "
+            + "            ON o.encounter_id = e.encounter_id "
+            + "    WHERE  e.voided=0  "
+            + "        AND o.voided=0  "
+            + "        AND( "
+            + "                (o.concept_id=${hivViralLoad} AND o.value_numeric < 1000) "
+            + "                OR "
+            + "                (o.concept_id=${hivViralLoadQualitative} AND o.value_coded IN (${beyondDetectableLimit},${undetectableViralLoad},${lessThan10Copies},${lessThan20Copies},${lessThan40Copies},${lessThan400Copies},${lessThan839Copies})) "
+            + "            )  "
+            + "        AND e.location_id= :location "
+            + "AND (  "
+            + "                                       (e.encounter_type IN (${adultoSeguimento},${pediatriaSeguimento},${misauLaboratorio},${fsr})   "
+            + "                                             AND e.encounter_datetime    "
+            + "                        BETWEEN date_add(date_add(:endDate, interval -12 MONTH), interval 1 day) AND :endDate  "
+            + "                                           AND e.encounter_datetime = vl_max.max_date )  "
+            + "                           OR   "
+            + "                                       (e.encounter_type =${masterCard}  "
+            + "                                             AND o.obs_datetime      "
+            + "                        BETWEEN date_add(date_add(:endDate, interval -12 MONTH), interval 1 day) AND :endDate  "
+            + "                                             AND o.obs_datetime = vl_max.max_date       )  "
+            + "                                 )  "
+            + "        "
+            + "   ORDER BY vl_max.patient_id ";
 
     StringSubstitutor sb = new StringSubstitutor(map);
     String replaceQuery = sb.replace(query);
@@ -779,14 +779,14 @@ public class EriDSDCohortQueries {
 
   /** Patients who are scheduled for the next pickup. */
   private CohortDefinition getPatientsScheduled(
-          Concept conceptId,
-          List<EncounterType> encounterTypes,
-          Integer upperBound,
-          Integer lowerBound) {
+      Concept conceptId,
+      List<EncounterType> encounterTypes,
+      Integer upperBound,
+      Integer lowerBound) {
     CalculationCohortDefinition cd =
-            new CalculationCohortDefinition(
-                    "scheduledPatients",
-                    Context.getRegisteredComponents(NextAndPrevDatesCalculation.class).get(0));
+        new CalculationCohortDefinition(
+            "scheduledPatients",
+            Context.getRegisteredComponents(NextAndPrevDatesCalculation.class).get(0));
     cd.addParameter(new Parameter("location", "Location", Location.class));
     cd.addParameter(new Parameter("onOrBefore", "onOrBefore", Date.class));
     cd.addCalculationParameter("conceptId", conceptId);
@@ -804,10 +804,10 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("location", "Location", Location.class));
     cd.setName("Patients who are completed for their rapid flow");
     cd.setQuery(
-            GenericCohortQueries.getLastCodedObsBeforeDate(
-                    Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
-                    hivMetadata.getRapidFlow().getConceptId(),
-                    Arrays.asList(hivMetadata.getCompletedConcept().getConceptId())));
+        GenericCohortQueries.getLastCodedObsBeforeDate(
+            Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
+            hivMetadata.getRapidFlow().getConceptId(),
+            Arrays.asList(hivMetadata.getCompletedConcept().getConceptId())));
     return cd;
   }
 
@@ -818,17 +818,17 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("location", "Location", Location.class));
     cd.setName("Patients who marked start or continue rapid flow");
     cd.setQuery(
-            GenericCohortQueries.getLastCodedObsBeforeDate(
-                    Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
-                    hivMetadata.getRapidFlow().getConceptId(),
-                    Arrays.asList(
-                            hivMetadata.getStartDrugsConcept().getConceptId(),
-                            hivMetadata.getContinueRegimenConcept().getConceptId())));
+        GenericCohortQueries.getLastCodedObsBeforeDate(
+            Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
+            hivMetadata.getRapidFlow().getConceptId(),
+            Arrays.asList(
+                hivMetadata.getStartDrugsConcept().getConceptId(),
+                hivMetadata.getContinueRegimenConcept().getConceptId())));
     return cd;
   }
 
   private CohortDefinition getPatientsScheduled175to190days(
-          List<EncounterType> encounterTypes, Concept concept) {
+      List<EncounterType> encounterTypes, Concept concept) {
     int lowerBound = 175;
     int upperBound = 190;
     return getPatientsScheduled(concept, encounterTypes, upperBound, lowerBound);
@@ -844,11 +844,11 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("location", "Location", Location.class));
 
     cd.setQuery(
-            DsdQueries.getPatientsOnMasterCardAF(
-                    hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId(),
-                    hivMetadata.getFamilyApproach().getConceptId(),
-                    hivMetadata.getStartDrugs().getConceptId(),
-                    hivMetadata.getContinueRegimenConcept().getConceptId()));
+        DsdQueries.getPatientsOnMasterCardAF(
+            hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId(),
+            hivMetadata.getFamilyApproach().getConceptId(),
+            hivMetadata.getStartDrugs().getConceptId(),
+            hivMetadata.getContinueRegimenConcept().getConceptId()));
 
     return cd;
   }
@@ -870,12 +870,12 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("onOrBefore", "Before Date", Date.class));
     cd.addParameter(new Parameter("location", "Location", Location.class));
     cd.setQuery(
-            GenericCohortQueries.getLastCodedObsBeforeDate(
-                    Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
-                    hivMetadata.getGaac().getConceptId(),
-                    Arrays.asList(
-                            hivMetadata.getStartDrugsConcept().getConceptId(),
-                            hivMetadata.getContinueRegimenConcept().getConceptId())));
+        GenericCohortQueries.getLastCodedObsBeforeDate(
+            Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
+            hivMetadata.getGaac().getConceptId(),
+            Arrays.asList(
+                hivMetadata.getStartDrugsConcept().getConceptId(),
+                hivMetadata.getContinueRegimenConcept().getConceptId())));
     return cd;
   }
 
@@ -885,10 +885,10 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("onOrBefore", "Before Date", Date.class));
     cd.addParameter(new Parameter("location", "Location", Location.class));
     cd.setQuery(
-            GenericCohortQueries.getLastCodedObsBeforeDate(
-                    Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
-                    hivMetadata.getGaac().getConceptId(),
-                    Arrays.asList(hivMetadata.getCompletedConcept().getConceptId())));
+        GenericCohortQueries.getLastCodedObsBeforeDate(
+            Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
+            hivMetadata.getGaac().getConceptId(),
+            Arrays.asList(hivMetadata.getCompletedConcept().getConceptId())));
     return cd;
   }
 
@@ -912,10 +912,10 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("onOrBefore", "Before Date", Date.class));
     cd.addParameter(new Parameter("location", "Location", Location.class));
     cd.setQuery(
-            GenericCohortQueries.getLastCodedObservationBeforeDate(
-                    Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
-                    hivMetadata.getQuarterlyDispensation().getConceptId(),
-                    Arrays.asList(hivMetadata.getCompletedConcept().getConceptId())));
+        GenericCohortQueries.getLastCodedObservationBeforeDate(
+            Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
+            hivMetadata.getQuarterlyDispensation().getConceptId(),
+            Arrays.asList(hivMetadata.getCompletedConcept().getConceptId())));
     return cd;
   }
 
@@ -926,12 +926,12 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("location", "Location", Location.class));
 
     cd.setQuery(
-            GenericCohortQueries.getLastCodedObservationBeforeDate(
-                    Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
-                    hivMetadata.getQuarterlyDispensation().getConceptId(),
-                    Arrays.asList(
-                            hivMetadata.getStartDrugsConcept().getConceptId(),
-                            hivMetadata.getContinueRegimenConcept().getConceptId())));
+        GenericCohortQueries.getLastCodedObservationBeforeDate(
+            Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
+            hivMetadata.getQuarterlyDispensation().getConceptId(),
+            Arrays.asList(
+                hivMetadata.getStartDrugsConcept().getConceptId(),
+                hivMetadata.getContinueRegimenConcept().getConceptId())));
     return cd;
   }
 
@@ -941,10 +941,10 @@ public class EriDSDCohortQueries {
     cd.addParameter(new Parameter("onOrBefore", "Before Date", Date.class));
     cd.addParameter(new Parameter("location", "Location", Location.class));
     cd.setQuery(
-            GenericCohortQueries.getLastCodedObservationBeforeDate(
-                    Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
-                    hivMetadata.getTypeOfDispensationConcept().getConceptId(),
-                    Arrays.asList(hivMetadata.getQuarterlyConcept().getConceptId())));
+        GenericCohortQueries.getLastCodedObservationBeforeDate(
+            Arrays.asList(hivMetadata.getAdultoSeguimentoEncounterType().getEncounterTypeId()),
+            hivMetadata.getTypeOfDispensationConcept().getConceptId(),
+            Arrays.asList(hivMetadata.getQuarterlyConcept().getConceptId())));
     return cd;
   }
 

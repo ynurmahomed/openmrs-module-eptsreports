@@ -69,6 +69,17 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
             null,
             context);
 
+    CalculationResultMap getLastEncounterWithDepositionWithoutValueCodedMap =
+        ePTSCalculationService.getObs(
+            typeOfDispensation,
+            Arrays.asList(ficha),
+            cohort,
+            Arrays.asList(location),
+            null,
+            TimeQualifier.LAST,
+            null,
+            context);
+
     for (Integer pId : cohort) {
       boolean found = false;
 
@@ -82,6 +93,9 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
       Obs getObsWithDepositionAndMonthlyAsCodedValue =
           EptsCalculationUtils.obsResultForPatient(
               getLastEncounterWithDepositionAndMonthlyAsCodedValueMap, pId);
+      Obs getObsWithDepositionWithoutValueCodedObs =
+          EptsCalculationUtils.obsResultForPatient(
+              getLastEncounterWithDepositionWithoutValueCodedMap, pId);
 
       // case 1: fila as last encounter and has return visit date for drugs filled
       // Both 2 encounter are filled with relevant obseravtions
@@ -128,7 +142,7 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
       else if (lastFilaEncounter != null
           && lastFilaEncounter.getEncounterDatetime() != null
           && getObsWithReturnVisitDateFilled != null
-          && lastFichaEncounter == null
+          && getObsWithDepositionWithoutValueCodedObs == null
           && getObsWithReturnVisitDateFilled.getEncounter() != null
           && getObsWithReturnVisitDateFilled.getEncounter().getEncounterDatetime() != null
           && lastFilaEncounter.equals(getObsWithReturnVisitDateFilled.getEncounter())
@@ -142,7 +156,7 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
       // monthly
       else if (lastFichaEncounter != null
           && getObsWithDepositionAndMonthlyAsCodedValue != null
-          && lastFilaEncounter == null
+          && getObsWithReturnVisitDateFilled == null
           && getObsWithDepositionAndMonthlyAsCodedValue.getEncounter() != null
           && lastFichaEncounter.equals(getObsWithDepositionAndMonthlyAsCodedValue.getEncounter())) {
         found = true;
