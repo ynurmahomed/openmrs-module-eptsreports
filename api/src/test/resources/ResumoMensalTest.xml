@@ -566,15 +566,6 @@
 	<obs obs_id="4138576" person_id="12304" concept_id="6273" encounter_id="529881" obs_datetime="2019-11-01 00:00:00"
 		 location_id="21" value_coded="1706" creator="1" date_created="2019-11-11 09:58:52" voided="0"
 		 uuid="82d367ac-6e9a-433e-bf46-1ce440cedd52"/>
-	
-	<encounter encounter_id="529880" encounter_type="53" patient_id="12304" location_id="21"
-		 encounter_datetime="2019-11-11 00:00:00" creator="1" date_created="2019-11-11 13:48:16" voided="0"
-		 uuid="59c9c3eb-4a78-4dc2-91c7-7301e63dd3f6" />
- 
- 	<obs obs_id="512730" person_id="12304" concept_id="6272" encounter_id="529880" obs_datetime="2019-11-11 00:00:00"
-		 location_id="21" value_coded="1706" creator="1" date_created="2019-11-11 13:48:16" voided="0"
-		 uuid="ee12f2fb-cd34-4191-a845-e1f39d9a2c23"/>	
-
 	<!-- -->
 
 	<!-- testgetPatientsWithStartDrugs-->

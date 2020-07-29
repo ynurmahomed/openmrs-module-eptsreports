@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -225,18 +224,14 @@ public class ResumoMensalCohortQueriesTest extends DefinitionsTest {
     CohortDefinition cd = resumoMensalCohortQueries.getPatientsTransferredOutB5(true);
 
     HashMap<Parameter, Object> parameters = new HashMap<>();
-    parameters.put(new Parameter("startDate", "Start Date", Date.class), this.getStartDate());
-    parameters.put(new Parameter("endDate", "End Date", Date.class), this.getEndDate());
+    parameters.put(new Parameter("onOrAfter", "Start Date", Date.class), this.getStartDate());
+    parameters.put(new Parameter("onOrBefore", "End Date", Date.class), this.getEndDate());
     parameters.put(new Parameter("location", "Location", Location.class), this.getLocation());
 
     EvaluatedCohort evaluatedCohort = evaluateCohortDefinition(cd, parameters);
 
-    /*assertEquals(3, evaluatedCohort.getMemberIds().size());
-    assertTrue(evaluatedCohort.getMemberIds().contains(1933));*/
-    Set<Integer> in = evaluatedCohort.getMemberIds();
-    for (Integer p : in) {
-      System.out.println(">>>>>>>>>>>>>" + p);
-    }
+    assertEquals(2, evaluatedCohort.getMemberIds().size());
+    assertTrue(evaluatedCohort.getMemberIds().contains(12304));
   }
 
   @Test
