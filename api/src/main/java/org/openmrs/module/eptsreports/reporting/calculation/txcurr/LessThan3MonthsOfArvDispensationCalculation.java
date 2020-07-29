@@ -107,7 +107,25 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
           && getObsWithDepositionAndMonthlyAsCodedValue.getValueCoded().equals(monthly)) {
         found = true;
       }
-      // case 5: if both fila and ficha are available taken on the same date, we pick fila first if
+      // case 2: ficha as the last encounter and has Last TYPE OF DISPENSATION and value coded as
+      // monthly, make sure the last encounter has required obs collected on them
+      else if (lastFilaEncounter != null
+          && lastFichaEncounter != null
+          && lastFilaEncounter.getEncounterDatetime() != null
+          && lastFichaEncounter.getEncounterDatetime() != null
+          && getObsWithReturnVisitDateFilled != null
+          && getObsWithDepositionAndMonthlyAsCodedValue != null
+          && getObsWithReturnVisitDateFilled.getEncounter() != null
+          && getObsWithDepositionAndMonthlyAsCodedValue.getEncounter() != null
+          && lastFichaEncounter.equals(getObsWithDepositionAndMonthlyAsCodedValue.getEncounter())
+          && lastFilaEncounter.equals(getObsWithReturnVisitDateFilled.getEncounter())
+          && getObsWithDepositionAndMonthlyAsCodedValue.getValueCoded().equals(monthly)
+          && lastFichaEncounter
+              .getEncounterDatetime()
+              .after(lastFilaEncounter.getEncounterDatetime())) {
+        found = true;
+      }
+      // case 3: if both fila and ficha are available taken on the same date, we pick fila first if
       // it has the next drug pick up date
       // otherwise we consider ficha if fila is null, but ficha has to contain the required obs to
       // pass
@@ -131,25 +149,8 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
               < 83) {
         found = true;
       }
-      // case 2: ficha as the last encounter and has Last TYPE OF DISPENSATION and value coded as
-      // monthly, make sure the last encounter has required obs collected on them
-      else if (lastFilaEncounter != null
-          && lastFichaEncounter != null
-          && lastFilaEncounter.getEncounterDatetime() != null
-          && lastFichaEncounter.getEncounterDatetime() != null
-          && getObsWithReturnVisitDateFilled != null
-          && getObsWithDepositionAndMonthlyAsCodedValue != null
-          && getObsWithReturnVisitDateFilled.getEncounter() != null
-          && getObsWithDepositionAndMonthlyAsCodedValue.getEncounter() != null
-          && lastFichaEncounter.equals(getObsWithDepositionAndMonthlyAsCodedValue.getEncounter())
-          && lastFilaEncounter.equals(getObsWithReturnVisitDateFilled.getEncounter())
-          && getObsWithDepositionAndMonthlyAsCodedValue.getValueCoded().equals(monthly)
-          && lastFichaEncounter
-              .getEncounterDatetime()
-              .after(lastFilaEncounter.getEncounterDatetime())) {
-        found = true;
-      }
-      // case 3: Only fila available and has value datetime collected for the next drug pick up
+
+      // case 4: Only fila available and has value datetime collected for the next drug pick up
 
       else if (lastFilaEncounter != null
           && getObsWithReturnVisitDateFilled != null
@@ -162,7 +163,7 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
               < 83) {
         found = true;
       }
-      // case 4: if only ficha is available and has Last TYPE OF DISPENSATION and value coded as
+      // case 5: if only ficha is available and has Last TYPE OF DISPENSATION and value coded as
       // monthly
       else if (lastFichaEncounter != null
           && getObsWithDepositionAndMonthlyAsCodedValue != null
