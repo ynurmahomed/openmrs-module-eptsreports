@@ -147,7 +147,7 @@ public class ResumoMensalCohortQueriesTest extends DefinitionsTest {
 
     EvaluatedCohort evaluatedCohort = evaluateCohortDefinition(cd, parameters);
 
-    assertEquals(2, evaluatedCohort.getMemberIds().size());
+    assertEquals(5, evaluatedCohort.getMemberIds().size());
     assertTrue(evaluatedCohort.getMemberIds().contains(1003));
   }
 
@@ -258,8 +258,7 @@ public class ResumoMensalCohortQueriesTest extends DefinitionsTest {
     assertTrue(evaluatedCohort.getMemberIds().contains(6254));
   }
 
-  /*@Test
-  @Ignore("")
+  @Test
   public void getNumberOfPatientTbScreenedInFirstEncounterShouldReturnPatientsTbScreenedInFirstEncounter() throws EvaluationException {
     CohortDefinition cd = resumoMensalCohortQueries.getNumberOfPatientTbScreenedInFirstEncounter();
 
@@ -270,12 +269,11 @@ public class ResumoMensalCohortQueriesTest extends DefinitionsTest {
 
     EvaluatedCohort evaluatedCohort = evaluateCohortDefinition(cd, parameters);
 
-    assertEquals(3, evaluatedCohort.getMemberIds().size());
-    assertTrue(evaluatedCohort.getMemberIds().contains(1933));
+    assertEquals(1, evaluatedCohort.getMemberIds().size());
+    assertTrue(evaluatedCohort.getMemberIds().contains(6254));
   }
 
   @Test
-  @Ignore("")
   public void getPatientsWhoInitiatedPreTarvDuringCurrentMonthAndStartedTpiC2ShouldReturnPatientsTpiC2() throws EvaluationException {
     CohortDefinition cd = resumoMensalCohortQueries.getPatientsWhoInitiatedPreTarvDuringCurrentMonthAndStartedTpiC2();
 
@@ -286,7 +284,7 @@ public class ResumoMensalCohortQueriesTest extends DefinitionsTest {
 
     EvaluatedCohort evaluatedCohort = evaluateCohortDefinition(cd, parameters);
 
-    assertEquals(3, evaluatedCohort.getMemberIds().size());
-    assertTrue(evaluatedCohort.getMemberIds().contains(1933));
-  }*/
+    assertEquals(1, evaluatedCohort.getMemberIds().size());
+    assertTrue(evaluatedCohort.getMemberIds().contains(15236));
+  }
 }
