@@ -538,7 +538,7 @@
 		 location_id="21" value_coded="1065" comments="24 de julho" creator="1"
 		 date_created="2019-12-18 14:50:26" voided="0" uuid="661aa566-62cb-4781-b0e3-33714979a854"/>
 
-	<obs obs_id="4267221" person_id="12475" concept_id="8888" encounter_id="539804" obs_datetime="2019-12-18 00:00:00"
+	<obs obs_id="4267221" person_id="12475" concept_id="6300" encounter_id="539804" obs_datetime="2019-12-18 00:00:00"
 		 location_id="21" value_coded="6276"  comments="24 de julho" creator="1"
 		 date_created="2019-12-18 14:50:26" voided="0" uuid="f201f3df-6c0a-4503-a5b3-694ed51e391b"/>
 
