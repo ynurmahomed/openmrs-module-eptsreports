@@ -97,14 +97,14 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
           && lastFichaEncounter.equals(getObsWithDepositionAndMonthlyAsCodedValue.getEncounter())
           && lastFilaEncounter.equals(getObsWithReturnVisitDateFilled.getEncounter())
           && getObsWithReturnVisitDateFilled.getEncounter().getEncounterDatetime() != null
+          && getObsWithReturnVisitDateFilled.getValueDatetime() != null
           && lastFilaEncounter
               .getEncounterDatetime()
               .after(lastFichaEncounter.getEncounterDatetime())
           && EptsCalculationUtils.daysSince(
                   lastFilaEncounter.getEncounterDatetime(),
                   getObsWithReturnVisitDateFilled.getValueDatetime())
-              < 83
-          && getObsWithDepositionAndMonthlyAsCodedValue.getValueCoded().equals(monthly)) {
+              < 83) {
         found = true;
       }
       // case 2: ficha as the last encounter and has Last TYPE OF DISPENSATION and value coded as
@@ -140,6 +140,7 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
           && lastFichaEncounter.equals(getObsWithDepositionAndMonthlyAsCodedValue.getEncounter())
           && lastFilaEncounter.equals(getObsWithReturnVisitDateFilled.getEncounter())
           && getObsWithReturnVisitDateFilled.getEncounter().getEncounterDatetime() != null
+          && getObsWithReturnVisitDateFilled.getValueDatetime() != null
           && lastFilaEncounter
               .getEncounterDatetime()
               .equals(lastFichaEncounter.getEncounterDatetime())
@@ -157,6 +158,7 @@ public class LessThan3MonthsOfArvDispensationCalculation extends AbstractPatient
           && getObsWithReturnVisitDateFilled.getEncounter() != null
           && getObsWithReturnVisitDateFilled.getEncounter().getEncounterDatetime() != null
           && lastFilaEncounter.equals(getObsWithReturnVisitDateFilled.getEncounter())
+          && getObsWithReturnVisitDateFilled.getValueDatetime() != null
           && EptsCalculationUtils.daysSince(
                   lastFilaEncounter.getEncounterDatetime(),
                   getObsWithReturnVisitDateFilled.getValueDatetime())

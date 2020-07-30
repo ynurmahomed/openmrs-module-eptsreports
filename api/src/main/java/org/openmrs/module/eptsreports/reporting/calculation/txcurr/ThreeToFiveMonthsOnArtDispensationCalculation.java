@@ -202,6 +202,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
               .getValueCoded()
               .equals(quaterlyDispensation)
           && getLastTypeOfDispensationObsWithoutQuartelyValueCoded.getEncounter() != null
+          && lastFilaObs.getValueDatetime() != null
           && lastFichaEncounter.equals(
               getLastTypeOfDispensationObsWithoutQuartelyValueCoded.getEncounter())
           && lastFilaEncounter
@@ -228,6 +229,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
           && lastFichaEncounter != null
           && lastFichaEncounter.getEncounterDatetime() != null
           && getLastQuartelyDispensationObsWithoutStartOrContinueRegimenObs != null
+          && lastFilaObs.getValueDatetime() != null
           && (getLastQuartelyDispensationObsWithoutStartOrContinueRegimenObs
                   .getValueCoded()
                   .equals(startDrugs)
@@ -308,6 +310,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
           && lastFilaEncounter.equals(lastFilaObs.getEncounter())
           && lastFichaEncounter.equals(
               getLastTypeOfDispensationObsWithoutQuartelyValueCoded.getEncounter())
+          && lastFilaObs.getValueDatetime() != null
           && lastFilaEncounter
               .getEncounterDatetime()
               .equals(lastFichaEncounter.getEncounterDatetime())
@@ -329,6 +332,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
           && lastFilaEncounter.equals(lastFilaObs.getEncounter())
           && lastFichaEncounter.equals(
               getLastQuartelyDispensationObsWithoutStartOrContinueRegimenObs.getEncounter())
+          && lastFilaObs.getValueDatetime() != null
           && lastFilaEncounter
               .getEncounterDatetime()
               .equals(lastFichaEncounter.getEncounterDatetime())
@@ -349,6 +353,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
           && getLastQuartelyDispensationWithoutStartOrContinueValueCodedObs == null
           && lastFilaEncounter.equals(lastFilaObs.getEncounter())
           && lastFilaObs.getEncounter().getEncounterDatetime() != null
+          && lastFilaObs.getValueDatetime() != null
           && EptsCalculationUtils.daysSince(
                   lastFilaEncounter.getEncounterDatetime(), lastFilaObs.getValueDatetime())
               >= 83
@@ -396,6 +401,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
           && lastFilaEncounter.equals(lastFilaObs.getEncounter())
           && lastFilaObs.getEncounter().getEncounterDatetime() != null
           && getLastTypeOfDispensationObsWithQuartelyValueCoded == null
+          && lastFilaObs.getValueDatetime() != null
           && EptsCalculationUtils.daysSince(
                   lastFilaEncounter.getEncounterDatetime(), lastFilaObs.getValueDatetime())
               >= 83
@@ -414,6 +420,7 @@ public class ThreeToFiveMonthsOnArtDispensationCalculation extends AbstractPatie
           && lastFilaEncounter.equals(lastFilaObs.getEncounter())
           && lastFilaObs.getEncounter().getEncounterDatetime() != null
           && getLastQuartelyDispensationObsWithStartOrContinueRegimenObs == null
+          && lastFilaObs.getValueDatetime() != null
           && EptsCalculationUtils.daysSince(
                   lastFilaEncounter.getEncounterDatetime(), lastFilaObs.getValueDatetime())
               >= 83

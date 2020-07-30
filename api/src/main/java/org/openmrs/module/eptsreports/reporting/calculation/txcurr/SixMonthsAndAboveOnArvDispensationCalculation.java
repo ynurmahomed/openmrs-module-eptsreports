@@ -153,6 +153,7 @@ public class SixMonthsAndAboveOnArvDispensationCalculation extends AbstractPatie
           && lastFilaEncounter.equals(lastFilaWithReturnForDrugsObs.getEncounter())
           && lastFichaObsWithSemestarlValueCoded != null
           && lastFichaEncounter.equals(lastFichaObsWithSemestarlValueCoded.getEncounter())
+          && lastFilaWithReturnForDrugsObs.getValueDatetime() != null
           && lastFilaEncounter
               .getEncounterDatetime()
               .after(lastFichaEncounter.getEncounterDatetime())
@@ -171,6 +172,7 @@ public class SixMonthsAndAboveOnArvDispensationCalculation extends AbstractPatie
           && lastFilaWithReturnForDrugsObs != null
           && lastFilaEncounter.equals(lastFilaWithReturnForDrugsObs.getEncounter())
           && lastDispensaSemestraWithStartOrContinueDrugsObs != null
+          && lastFilaWithReturnForDrugsObs.getValueDatetime() != null
           && lastFichaEncounter.equals(
               lastDispensaSemestraWithStartOrContinueDrugsObs.getEncounter())
           && lastFilaEncounter
@@ -218,6 +220,7 @@ public class SixMonthsAndAboveOnArvDispensationCalculation extends AbstractPatie
           && lastFilaEncounter.equals(lastFilaWithReturnForDrugsObs.getEncounter())
           && lastDispensaTrimestralWithoutSemestralObs == null
           && lastDispensaSemestraWithoutStartOrContinueDrugsObs == null
+          && lastFilaWithReturnForDrugsObs.getValueDatetime() != null
           && EptsCalculationUtils.daysSince(
                   lastFilaEncounter.getEncounterDatetime(),
                   lastFilaWithReturnForDrugsObs.getValueDatetime())
@@ -250,6 +253,7 @@ public class SixMonthsAndAboveOnArvDispensationCalculation extends AbstractPatie
           && lastFilaEncounter.equals(lastFilaWithReturnForDrugsObs.getEncounter())
           && lastFichaObsWithSemestarlValueCoded != null
           && lastFichaEncounter.equals(lastFichaObsWithSemestarlValueCoded.getEncounter())
+          && lastFilaWithReturnForDrugsObs.getValueDatetime() != null
           && lastFichaEncounter
               .getEncounterDatetime()
               .equals(lastFilaEncounter.getEncounterDatetime())
@@ -267,6 +271,7 @@ public class SixMonthsAndAboveOnArvDispensationCalculation extends AbstractPatie
           && lastFilaWithReturnForDrugsObs != null
           && lastFilaEncounter.equals(lastFilaWithReturnForDrugsObs.getEncounter())
           && lastDispensaSemestraWithStartOrContinueDrugsObs != null
+          && lastFilaWithReturnForDrugsObs.getValueDatetime() != null
           && lastFichaEncounter.equals(
               lastDispensaSemestraWithStartOrContinueDrugsObs.getEncounter())
           && lastFichaEncounter
